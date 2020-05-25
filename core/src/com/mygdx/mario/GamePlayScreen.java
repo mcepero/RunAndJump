@@ -1,5 +1,6 @@
 package com.mygdx.mario;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mygdx.mario.utils.Constants;
+import com.mygdx.mario.utils.ControlesMovil;
 import com.mygdx.mario.utils.Enums;
 import com.mygdx.mario.utils.LevelLoader;
 import com.mygdx.mario.utils.MarioHUD;
@@ -27,8 +29,8 @@ public class GamePlayScreen extends ScreenAdapter {
     private MarioHUD hud;
     private YouLostHUD gameOverOverlay;
     private TiempoChoqueHUD tiempoChoqueHUD;
-    private NuevoNivel nuevoNivel;
     long levelEndOverlayStartTime;
+    private ControlesMovil controlesMovil;
 
     public String nivel;
 
@@ -43,15 +45,20 @@ public class GamePlayScreen extends ScreenAdapter {
         level = new Level(gameplayViewport);
         batch = new SpriteBatch();
         gameplayViewport = new ExtendViewport(Constants.WORLD_SIZE, Constants.WORLD_SIZE);
-
-        level = LevelLoader.load(nivel, level.getViewport());
+        Gdx.gl.glClearColor(0,1,1,1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        level = LevelLoader.load(nivel, level.getViewport(),3);
 
         chaseCam = new com.mygdx.mario.utils.ChaseCam(gameplayViewport.getCamera(), level.getMario());
 
         hud = new MarioHUD();
         tiempoChoqueHUD = new TiempoChoqueHUD();
         gameOverOverlay = new YouLostHUD();
-        nuevoNivel = new NuevoNivel();
+        controlesMovil = new ControlesMovil(level.getMario());
+
+        if (onMobile()) {
+            Gdx.input.setInputProcessor(controlesMovil);
+        }
     }
 
     @Override
@@ -61,8 +68,10 @@ public class GamePlayScreen extends ScreenAdapter {
 
         tiempoChoqueHUD.viewport.update(width, height, true);
 
-        nuevoNivel.viewport.update(width, height, true);
         gameOverOverlay.viewport.update(width, height, true);
+
+        controlesMovil.viewport.update(width, height, true);
+        controlesMovil.recalculateButtonPositions();
     }
 
     @Override
@@ -82,8 +91,6 @@ public class GamePlayScreen extends ScreenAdapter {
         batch.setProjectionMatrix(gameplayViewport.getCamera().combined);
         batch.begin();
 
-        //batch.draw(Assets.instance.fondoAssets.fondo, level.getMario().getPosition().x - gameplayViewport.getScreenWidth()/2, gameplayViewport.getScreenY() - Constants.WORLD_SIZE+210, gameplayViewport.getScreenWidth(), gameplayViewport.getScreenHeight());
-
         level.render(batch);
         hud.render(batch, level.getMario().getVidasPersonaje());
         if (level.getMario().getChoque()== Enums.Choque.SI){
@@ -93,6 +100,14 @@ public class GamePlayScreen extends ScreenAdapter {
         batch.end();
         renderLevelEndOverlays(batch);
 
+        if (onMobile()) {
+            controlesMovil.render(batch);
+        }
+
+    }
+
+    private boolean onMobile() {
+        return Gdx.app.getType() == Application.ApplicationType.Android || Gdx.app.getType() == Application.ApplicationType.iOS;
     }
 
     private void renderLevelEndOverlays(SpriteBatch batch) {
@@ -111,7 +126,10 @@ public class GamePlayScreen extends ScreenAdapter {
 
     private void renderNuevoNivel(SpriteBatch batch) {
         if (level.getLlaves().size==0) {
-            nuevoNivel.init();
+            level = LevelLoader.load("Nivel2", gameplayViewport,level.getMario().getVidasPersonaje());
+            chaseCam = new com.mygdx.mario.utils.ChaseCam(gameplayViewport.getCamera(), level.getMario());
+            resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            controlesMovil.mario = level.getMario();
         }
     }
 }

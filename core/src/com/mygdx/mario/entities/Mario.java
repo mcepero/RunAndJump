@@ -10,21 +10,21 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.mygdx.mario.Assets;
-import com.mygdx.mario.NuevoNivel;
 import com.mygdx.mario.utils.Constants;
 import com.mygdx.mario.utils.CuentaAtras;
 import com.mygdx.mario.utils.Enums;
 import com.mygdx.mario.Level;
-import com.mygdx.mario.utils.LevelLoader;
 import com.mygdx.mario.utils.Utils;
 
-import java.util.Locale;
 import java.util.Timer;
 
 public class Mario{
 
     public final static String TAG = Mario.class.getName();
 
+    public boolean botonSaltar;
+    public boolean botonIzquierda;
+    public boolean botonDerecha;
     public Vector2 spawnLocation;
     public Vector2 position;
     public Vector2 lastFramePosition;
@@ -62,7 +62,7 @@ public class Mario{
         choque = Enums.Choque.NO;
     }
 
-    public void update(float delta, Array<Plataforma> plataformas) {
+    public void update(float delta, Array<Plataforma> plataformas, Array<Bloque2> bloques2, Array<Bloque3> bloques3) {
         lastFramePosition.set(position);
         velocity.y -= Constants.GRAVITY;
         position.mulAdd(velocity, delta);
@@ -84,17 +84,63 @@ public class Mario{
                 }
             }
 
+            for (Bloque2 bloque2 : bloques2) {
+                if (SobreBloque(bloque2)) {
+                    jumpState = Enums.JumpState.GROUNDED;
+                    velocity.y = 0;
+                    position.y = bloque2.top + Constants.MARIO_EYE_HEIGHT;
+                    level.getBloques2().removeValue(bloque2,true);
+                }
+            }
+
+            for (Bloque3 bloque3 : bloques3) {
+                if (SobreBloque3(bloque3)) {
+                    jumpState = Enums.JumpState.GROUNDED;
+                    velocity.y = 0;
+                    position.y = bloque3.top + Constants.MARIO_EYE_HEIGHT;
+                }
+            }
+
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+        /*if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             moveLeft(delta);
+            botonIzquierda=true;
         } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             moveRight(delta);
+            botonDerecha=true;
         } else {
             walkState = Enums.WalkState.NOT_WALKING;
+        }*/
+
+        if (jumpState != Enums.JumpState.RECOILING) {
+
+            boolean left = Gdx.input.isKeyPressed(Input.Keys.LEFT) || botonIzquierda;
+            boolean right = Gdx.input.isKeyPressed(Input.Keys.RIGHT) || botonDerecha;
+
+            if (left && !right) {
+                moveLeft(delta);
+            } else if (right && !left) {
+                moveRight(delta);
+            } else {
+                walkState = Enums.WalkState.NOT_WALKING;
+            }
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+        /*if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            switch (jumpState) {
+                case GROUNDED:
+                    startJump();
+                    botonSaltar=true;
+                    break;
+                case JUMPING:
+                    continueJump();
+            }
+        } else {
+            endJump();
+        }*/
+
+        if (Gdx.input.isKeyPressed(Input.Keys.UP) || botonSaltar) {
             switch (jumpState) {
                 case GROUNDED:
                     startJump();
@@ -106,103 +152,123 @@ public class Mario{
             endJump();
         }
 
-        if (position.x<=0)
-            position.x=0;
-        else if(position.x>=1350)
-            position.x=1350;
+        if (position.x <= -4450)
+            position.x = -4450;
+        else if (position.x >= 2420)
+            position.x = 2420;
 
         Rectangle rectanguloMario = new Rectangle(
-                position.x - Constants.MARIO_STANCE_WIDTH / 2,
-                position.y - Constants.MARIO_EYE_HEIGHT,
-                Constants.MARIO_STANCE_WIDTH,
-                Constants.MARIO_HEIGHT);
+                position.x,
+                position.y,
+                Assets.instance.marioAssets.jumping.getRegionWidth(),
+                Assets.instance.marioAssets.jumping.getRegionHeight());
 
         for (Enemigo enemigo : level.getEnemigos()) {
             Rectangle rectanguloEnemigo = new Rectangle(
-                    enemigo.position.x - Constants.ENEMIGO_COLLISION_RADIUS,
-                    enemigo.position.y - Constants.ENEMIGO_COLLISION_RADIUS,
-                    2 * Constants.ENEMIGO_COLLISION_RADIUS,
-                    2 * Constants.ENEMIGO_COLLISION_RADIUS
+                    enemigo.position.x,
+                    enemigo.position.y ,
+                    enemigo.width,
+                    enemigo.height
             );
 
             Timer timer = new Timer();
             CuentaAtras cuenta = new CuentaAtras(this);
             if (rectanguloMario.overlaps(rectanguloEnemigo)) {
-                if (choque == Enums.Choque.NO){
-                    position=new Vector2(0, 30);
+                if (choque == Enums.Choque.NO) {
+                    position = new Vector2(-4450, 30);
                     vidasPersonaje--;
-                }else if(choque == Enums.Choque.SI){
-                    enemigo.estadoEnemigo=Enums.EstadoEnemigo.MUERTO;
-                    //if (enemigo.estadoEnemigo==Enums.EstadoEnemigo.VIVO)
-                    timer.schedule(cuenta, 0, 100);
-
-                    System.out.println("EEEE"+cuenta.getCountdown());
-                    if (cuenta.getCountdown()==0)
-                        level.getEnemigos().removeValue(enemigo,true);
+                } else if (choque == Enums.Choque.SI) {
+                    enemigo.estadoEnemigo = Enums.EstadoEnemigo.MUERTO;
+                    float walkTimeSeconds = Utils.secondsSince(enemigo.getWalkStartTime());
+                    if (enemigo.direction == Enums.Direction.LEFT) {
+                        if (enemigo.acabar == true) {
+                            level.getEnemigos().removeValue(enemigo, true);
+                        }
+                    } else if (enemigo.direction == Enums.Direction.RIGHT) {
+                        if (enemigo.acabar == true) {
+                            level.getEnemigos().removeValue(enemigo, true);
+                        }
+                    }
                 }
             }
         }
 
         for (Vida vida : level.getVidas()) {
             Rectangle rectanguloVida = new Rectangle(
-                    vida.position.x - Constants.VIDA_COLLISION_RADIUS,
-                    vida.position.y - Constants.VIDA_COLLISION_RADIUS,
-                    2 * Constants.VIDA_COLLISION_RADIUS,
-                    2 * Constants.VIDA_COLLISION_RADIUS
+                    vida.position.x/* - Constants.VIDA_COLLISION_RADIUS*/,
+                    vida.position.y/* - Constants.VIDA_COLLISION_RADIUS*/,
+                    vida.width, //2 * Constants.VIDA_COLLISION_RADIUS,
+                    vida.height//2 * Constants.VIDA_COLLISION_RADIUS
             );
 
             if (rectanguloMario.overlaps(rectanguloVida)) {
-                level.getVidas().removeValue(vida,true);
+                level.getVidas().removeValue(vida, true);
                 vidasPersonaje++;
             }
         }
 
         for (Llave llave : level.getLlaves()) {
             Rectangle rectanguloLlave = new Rectangle(
-                    llave.position.x - Constants.VIDA_COLLISION_RADIUS,
-                    llave.position.y - Constants.VIDA_COLLISION_RADIUS,
-                    2 * Constants.VIDA_COLLISION_RADIUS,
-                    2 * Constants.VIDA_COLLISION_RADIUS
+                    llave.position.x,
+                    llave.position.y,
+                    llave.width,
+                    llave.height
             );
 
             if (rectanguloMario.overlaps(rectanguloLlave)) {
-                level.getLlaves().removeValue(llave,true);
+                level.getLlaves().removeValue(llave, true);
                 System.out.println("HAS GANADO!!!!");
-                NuevoNivel nuevoNivel = new NuevoNivel();
             }
         }
 
         for (Pinchos pinchos : level.getPinchos()) {
             Rectangle rectanguloPinchos = new Rectangle(
-                    pinchos.position.x - Constants.PINCHOS_COLLISION_RADIUS,
-                    pinchos.position.y - Constants.PINCHOS_COLLISION_RADIUS,
-                    2 * Constants.PINCHOS_COLLISION_RADIUS,
-                    2 * Constants.PINCHOS_COLLISION_RADIUS
+                    pinchos.position.x+Constants.PINCHOS_COLLISION_RADIUS,
+                    pinchos.position.y+Constants.PINCHOS_COLLISION_RADIUS,
+                    pinchos.width,
+                    pinchos.height
             );
 
             if (rectanguloMario.overlaps(rectanguloPinchos)) {
                 vidasPersonaje--;
-                position = new Vector2(0, 30);
+                position = new Vector2(-4450, 30);
+            }
+        }
+
+        for (Bola bola : level.getBolas()) {
+            Rectangle rectanguloBola = new Rectangle(
+                    bola.position.x,
+                    bola.position.y,
+                    bola.width,
+                    bola.height
+            );
+
+            if (rectanguloMario.overlaps(rectanguloBola)) {
+                System.out.println("CHOQUEEEEEE");
+                System.out.println("MARIO: " + rectanguloMario.x+ " " +rectanguloMario.y + " BOla: " + rectanguloBola.x + " " + rectanguloBola.y);
+                vidasPersonaje--;
+                position = new Vector2(-4450, 30);
             }
         }
 
         for (Pocion pocion : level.getPociones()) {
             Rectangle rectanguloPociones = new Rectangle(
-                    pocion.position.x - Constants.POCION_COLLISION_RADIUS,
-                    pocion.position.y - Constants.POCION_COLLISION_RADIUS,
-                    2 * Constants.POCION_COLLISION_RADIUS,
-                    2 * Constants.POCION_COLLISION_RADIUS
+                    pocion.position.x,
+                    pocion.position.y,
+                    pocion.width,
+                    pocion.height
             );
 
             if (rectanguloMario.overlaps(rectanguloPociones)) {
-                choque=Enums.Choque.SI;
+                choque = Enums.Choque.SI;
                 Timer timer = new Timer();
                 cuentaAtras = new CuentaAtras(this);
                 timer.schedule(cuentaAtras, 0, 1000);
                 //cuentaAtras.setCountdown(5);
-                level.getPociones().removeValue(pocion,true);
+                level.getPociones().removeValue(pocion, true);
             }
         }
+
     }
 
     boolean SobrePlataforma(Plataforma plataforma) {
@@ -220,6 +286,44 @@ public class Mario{
             pieDerEn = (plataforma.left < pieDer && plataforma.right > pieDer);
 
             encima = (plataforma.left > pieIzq && plataforma.right < pieDer);
+        }
+        return pieIzqEn || pieDerEn || encima;
+    }
+
+    boolean SobreBloque(Bloque2 bloque2) {
+        boolean pieIzqEn = false;
+        boolean pieDerEn = false;
+        boolean encima = false;
+
+        if (lastFramePosition.y - Constants.MARIO_EYE_HEIGHT >= bloque2.top &&
+                position.y - Constants.MARIO_EYE_HEIGHT < bloque2.top) {
+
+            float pieIzq = position.x - Constants.MARIO_STANCE_WIDTH / 2;
+            float pieDer = position.x + Constants.MARIO_STANCE_WIDTH / 2;
+
+            pieIzqEn = (bloque2.left < pieIzq && bloque2.right > pieIzq);
+            pieDerEn = (bloque2.left < pieDer && bloque2.right > pieDer);
+
+            encima = (bloque2.left > pieIzq && bloque2.right < pieDer);
+        }
+        return pieIzqEn || pieDerEn || encima;
+    }
+
+    boolean SobreBloque3(Bloque3 bloque3) {
+        boolean pieIzqEn = false;
+        boolean pieDerEn = false;
+        boolean encima = false;
+
+        if (lastFramePosition.y - Constants.MARIO_EYE_HEIGHT >= bloque3.top &&
+                position.y - Constants.MARIO_EYE_HEIGHT < bloque3.top) {
+
+            float pieIzq = position.x - Constants.MARIO_STANCE_WIDTH / 2;
+            float pieDer = position.x + Constants.MARIO_STANCE_WIDTH / 2;
+
+            pieIzqEn = (bloque3.left < pieIzq && bloque3.right > pieIzq);
+            pieDerEn = (bloque3.left < pieDer && bloque3.right > pieDer);
+
+            encima = (bloque3.left > pieIzq && bloque3.right < pieDer);
         }
         return pieIzqEn || pieDerEn || encima;
     }
@@ -267,7 +371,6 @@ public class Mario{
 
     public void render(SpriteBatch batch) {
         TextureRegion region = Assets.instance.marioAssets.standing;
-
         if (facing == Enums.Direction.RIGHT && jumpState != Enums.JumpState.GROUNDED) {
             region = Assets.instance.marioAssets.jumping;
         } else if (facing == Enums.Direction.RIGHT && walkState == Enums.WalkState.NOT_WALKING) {

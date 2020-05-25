@@ -33,7 +33,7 @@ public class Constants {
     public static final float MARIO_MOVE_SPEED = 120;
     public static final Vector2 MARIO_EYE_POSITION = new Vector2(16, 15);
     public static final float MARIO_EYE_HEIGHT = 16.0f;
-    public static final float MARIO_STANCE_WIDTH = 21.0f;
+    public static final float MARIO_STANCE_WIDTH = 32.0f;
     public static final Vector2 MARIO_CANNON_OFFSET = new Vector2(12, -7);
     public static final float MARIO_HEIGHT = 23.0f;
     public static final float JUMP_SPEED = 200;
@@ -42,9 +42,9 @@ public class Constants {
     public static final String PLATFORM_SPRITE = "block1";
     public static final int PLATFORM_EDGE = 8;
 
-    public static final Vector2 ENEMY_CENTER = new Vector2(14, 22);
+
     public static final float ENEMY_MOVE_SPEED = 80;
-    public static final Vector2 ENEMY_EYE_POSITION = new Vector2(16, 20);
+    public static final Vector2 ENEMY_EYE_POSITION = new Vector2(0, 20);
 
     public static final String ENEMIGO1 = "enemigo1";
     public static final String ENEMIGO2 = "enemigo2";
@@ -68,7 +68,7 @@ public class Constants {
     public static final String ENEMIGO_MUERTO4 = "enemigomuerto4";
     public static final String ENEMIGO_MUERTO5 = "enemigomuerto5";
     public static final String ENEMIGO_MUERTO6 = "enemigomuerto6";
-    //public static final String ENEMIGO_MUERTO7 = "enemigomuerto7";
+    public static final String ENEMIGO_MUERTO7 = "enemigomuerto7";
 
     public static final String ENEMIGO_MUERTO1_LEFT = "enemigomuerto1-left";
     public static final String ENEMIGO_MUERTO2_LEFT = "enemigomuerto2-left";
@@ -76,22 +76,33 @@ public class Constants {
     public static final String ENEMIGO_MUERTO4_LEFT = "enemigomuerto4-left";
     public static final String ENEMIGO_MUERTO5_LEFT = "enemigomuerto15-left";
     public static final String ENEMIGO_MUERTO6_LEFT = "enemigomuerto6-left";
-    //public static final String ENEMIGO_MUERTO7_LEFT = "enemigomuerto7";
+    public static final String ENEMIGO_MUERTO7_LEFT = "enemigomuerto7";
 
-    public static final float ENEMIGO_COLLISION_RADIUS = 10;
+    public static final String BLOQUE2 = "block4";
+    public static final Vector2 BLOQUE_CENTER = new Vector2(0, 0);
+
+    public static final String BLOQUE3 = "block2";
+
+    public static final float ENEMIGO_COLLISION_RADIUS = 2;
 
     public static final String NUBE1 = "nube";
     public static final String NUBE2 = "nube2";
     public static final int NUBE_EDGE = 10;
 
     public static final String VIDA = "heart";
-    public static final int VIDA_EDGE = 5;
+    public static final Vector2 VIDA_CENTER = new Vector2(0, 0);
     public static final float VIDA_COLLISION_RADIUS = 8;
 
     public static final String LLAVE = "key";
     public static final int LLAVE_EDGE = 5;
     public static final float LLAVE_COLLISION_RADIUS = 7;
 
+    public static final String BOLA = "bola";
+    public static final float BOLA_CENTER = 8f;
+    public static final float BOLA_SIZE = 16;
+    public static final float BOLA_MOVE_SPEED = 100;
+   // public static final Vector2 BOLA_EYE_POSITION = new Vector2(16, 35);
+    public static final float BOLA_COLLISION_RADIUS = 15;
 
     public static final String LEVEL_DIR = "levels";
     public static final String LEVEL_FILE_EXTENSION = "dt";
@@ -111,8 +122,14 @@ public class Constants {
     public static final String LEVEL_VIDA_TAG = "Vida";
     public static final String LEVEL_LLAVE_TAG = "Llave";
     public static final String LEVEL_FONDO_TAG = "Fondo";
+    public static final String LEVEL_FONDO2_TAG = "Fondo2";
+    public static final String LEVEL_FONDO3_TAG = "Fondo3";
     public static final String LEVEL_PINCHOS_TAG = "Pinchos";
     public static final String LEVEL_POCION_TAG = "Pocion";
+    public static final String LEVEL_BLOQUE2_TAG = "Bloque2";
+    public static final String LEVEL_BLOQUE3_TAG = "Bloque3";
+    public static final String LEVEL_BOLA_TAG = "Bola";
+
 
     public static final float HUD_VIEWPORT_SIZE = 480;
     public static final float HUD_MARGIN = 2;
@@ -123,15 +140,25 @@ public class Constants {
     public static final String FONT_FILE = "font/header.fnt";
 
     public static final String FONDO = "fondo";
+    public static final String FONDO2 = "fondo2";
+    public static final String FONDO3 = "fondo3";
+    public static final Vector2 FONDO_CENTER = new Vector2(0, 0);
     public static final int FONDO_EDGE = 20;
 
     public static final String PINCHOS = "spikes1";
-    public static final int PINCHOS_EDGE = 5;
-    public static final float PINCHOS_COLLISION_RADIUS = 10;
+    public static final Vector2 PINCHOS_CENTER = new Vector2(0, -2);
+    public static final float PINCHOS_COLLISION_RADIUS = 8;
 
     public static final String POCION = "pocion";
-    public static final int POCION_EDGE = 5;
+    public static final Vector2 POCION_CENTER = new Vector2(0, 0);
     public static final float POCION_COLLISION_RADIUS = 7;
+
+    public static final float ONSCREEN_CONTROLS_VIEWPORT_SIZE = 200;
+    public static final String BOTON_IZQUIERDA = "izquierda";
+    public static final String BOTON_DERECHA = "derecha";
+    public static final String BOTON_SALTAR = "saltar";
+    public static final Vector2 BUTTON_CENTER = new Vector2(15, 15);
+    public static final float BUTTON_RADIUS = 32;
 }
 
 

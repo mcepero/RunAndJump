@@ -25,6 +25,10 @@ public class Assets implements Disposable, AssetErrorListener {
     public FondoAssets fondoAssets;
     public PinchosAssets pinchosAssets;
     public PocionAssets pocionAssets;
+    public  Bloque2Assets bloque2Assets;
+    public Bloque3Assets bloque3Assets;
+    public  BolaAssets bolaAssets;
+    public ControlesMovil controlesMovil;
     private AssetManager assetManager;
 
     private Assets() {
@@ -46,6 +50,10 @@ public class Assets implements Disposable, AssetErrorListener {
         llaveAssets = new LlaveAssets(atlas);
         pinchosAssets = new PinchosAssets(atlas);
         pocionAssets = new PocionAssets(atlas);
+        bloque2Assets = new Bloque2Assets(atlas);
+        bloque3Assets = new Bloque3Assets(atlas);
+        bolaAssets = new BolaAssets(atlas);
+        controlesMovil = new ControlesMovil(atlas);
     }
 
     @Override
@@ -178,8 +186,8 @@ public class Assets implements Disposable, AssetErrorListener {
             deadRightFrames.add(atlas.findRegion(Constants.ENEMIGO_MUERTO4));
             deadRightFrames.add(atlas.findRegion(Constants.ENEMIGO_MUERTO5));
             deadRightFrames.add(atlas.findRegion(Constants.ENEMIGO_MUERTO6));
-            //deadRightFrames.add(atlas.findRegion(Constants.ENEMIGO_MUERTO7));
-            deadRightAnimation = new Animation(Constants.WALK_LOOP_DURATION, deadRightFrames, Animation.PlayMode.LOOP);
+            deadRightFrames.add(atlas.findRegion(Constants.ENEMIGO_MUERTO7));
+            deadRightAnimation = new Animation(0.1f, deadRightFrames, Animation.PlayMode.LOOP);
 
             Array<TextureAtlas.AtlasRegion> deadLeftFrames = new Array<TextureAtlas.AtlasRegion>();
             deadLeftFrames.add(atlas.findRegion(Constants.ENEMIGO_MUERTO1_LEFT));
@@ -188,8 +196,8 @@ public class Assets implements Disposable, AssetErrorListener {
             deadLeftFrames.add(atlas.findRegion(Constants.ENEMIGO_MUERTO4_LEFT));
             deadLeftFrames.add(atlas.findRegion(Constants.ENEMIGO_MUERTO5_LEFT));
             deadLeftFrames.add(atlas.findRegion(Constants.ENEMIGO_MUERTO6_LEFT));
-            //deadLeftFrames.add(atlas.findRegion(Constants.ENEMIGO_MUERTO7_LEFT));
-            deadLeftAnimation = new Animation(Constants.WALK_LOOP_DURATION, deadLeftFrames, Animation.PlayMode.LOOP);
+            deadLeftFrames.add(atlas.findRegion(Constants.ENEMIGO_MUERTO7_LEFT));
+            deadLeftAnimation = new Animation(0.1f, deadLeftFrames, Animation.PlayMode.LOOP);
 
 
         }
@@ -208,12 +216,8 @@ public class Assets implements Disposable, AssetErrorListener {
 
     public class VidaAssets {
         public final TextureAtlas.AtlasRegion vida;
-        public final NinePatch vidaNinePatch;
 
         public VidaAssets(TextureAtlas atlas) {
-            TextureAtlas.AtlasRegion region = atlas.findRegion(Constants.VIDA);
-            int edge = Constants.VIDA_EDGE;
-            vidaNinePatch = new NinePatch(region, edge, edge, edge, edge);
             vida = atlas.findRegion(Constants.VIDA);
         }
     }
@@ -231,38 +235,94 @@ public class Assets implements Disposable, AssetErrorListener {
     }
 
     public class FondoAssets {
-        public final TextureAtlas.AtlasRegion fondo;
+
         public final NinePatch fondoNinePatch;
+        public final NinePatch fondo2NinePatch;
+        public final NinePatch fondo3NinePatch;
 
         public FondoAssets(TextureAtlas atlas) {
             //fondo = atlas.findRegion(Constants.FONDO);
             TextureAtlas.AtlasRegion region = atlas.findRegion(Constants.FONDO);
             int edge = Constants.FONDO_EDGE;
             fondoNinePatch = new NinePatch(region, edge, edge, edge, edge);
-            fondo = atlas.findRegion(Constants.FONDO);
+
+            TextureAtlas.AtlasRegion region2 = atlas.findRegion(Constants.FONDO2);
+            int edge2 = Constants.FONDO_EDGE;
+            fondo2NinePatch = new NinePatch(region2, edge2, edge2, edge2, edge2);
+
+            TextureAtlas.AtlasRegion region3 = atlas.findRegion(Constants.FONDO3);
+            int edge3 = Constants.FONDO_EDGE;
+            fondo3NinePatch = new NinePatch(region3, edge3, edge3, edge3, edge3);
         }
     }
 
     public class PinchosAssets {
-        //public final TextureAtlas.AtlasRegion fondo;
-        public final NinePatch pinchosNinePatch;
+        public final TextureAtlas.AtlasRegion pinchos;
+        //public final NinePatch pinchosNinePatch;
 
         public PinchosAssets(TextureAtlas atlas) {
-            TextureAtlas.AtlasRegion region = atlas.findRegion(Constants.PINCHOS);
+            pinchos = atlas.findRegion(Constants.PINCHOS);
+            /*TextureAtlas.AtlasRegion region = atlas.findRegion(Constants.PINCHOS);
             int edge = Constants.PINCHOS_EDGE;
-            pinchosNinePatch = new NinePatch(region, edge, edge, edge, edge);
+            pinchosNinePatch = new NinePatch(region, edge, edge, edge, edge);*/
             //fondo = atlas.findRegion(Constants.FONDO);}
         }
     }
 
     public class PocionAssets {
-
-        public final NinePatch pocionNinePatch;
+        public final TextureAtlas.AtlasRegion pocion;
+        //public final NinePatch pocionNinePatch;
 
         public PocionAssets(TextureAtlas atlas) {
-            TextureAtlas.AtlasRegion region = atlas.findRegion(Constants.POCION);
+            pocion = atlas.findRegion(Constants.POCION);
+            /*TextureAtlas.AtlasRegion region = atlas.findRegion(Constants.POCION);
             int edge = Constants.POCION_EDGE;
-            pocionNinePatch = new NinePatch(region, edge, edge, edge, edge);
+            pocionNinePatch = new NinePatch(region, edge, edge, edge, edge);*/
+        }
+    }
+
+    public class Bloque2Assets {
+        public final NinePatch bloqueNinePatch;
+
+        public Bloque2Assets(TextureAtlas atlas) {
+            TextureAtlas.AtlasRegion region = atlas.findRegion(Constants.BLOQUE2);
+            int edge = Constants.PLATFORM_EDGE;
+            bloqueNinePatch = new NinePatch(region, edge, edge, edge, edge);
+        }
+    }
+
+    public class Bloque3Assets {
+        public final NinePatch bloque3NinePatch;
+
+        public Bloque3Assets(TextureAtlas atlas) {
+            TextureAtlas.AtlasRegion region = atlas.findRegion(Constants.BLOQUE3);
+            int edge = Constants.PLATFORM_EDGE;
+            bloque3NinePatch = new NinePatch(region, edge, edge, edge, edge);
+        }
+    }
+
+    public class BolaAssets {
+        public final TextureAtlas.AtlasRegion bola;
+        public final Animation moveAnimation;
+
+
+        public BolaAssets(TextureAtlas atlas) {
+            Array<TextureAtlas.AtlasRegion> moveFrames = new Array<TextureAtlas.AtlasRegion>();
+            moveFrames.add(atlas.findRegion(Constants.BOLA));
+            moveAnimation = new Animation(Constants.WALK_LOOP_DURATION, moveFrames , Animation.PlayMode.LOOP);
+            bola = atlas.findRegion(Constants.BOLA);
+        }
+    }
+
+    public class ControlesMovil{
+        public final TextureAtlas.AtlasRegion derecha;
+        public final TextureAtlas.AtlasRegion izquierda;
+        public final TextureAtlas.AtlasRegion saltar;
+
+        public ControlesMovil(TextureAtlas atlas) {
+            derecha = atlas.findRegion(Constants.BOTON_DERECHA);
+            izquierda = atlas.findRegion(Constants.BOTON_IZQUIERDA);
+            saltar = atlas.findRegion(Constants.BOTON_SALTAR);
         }
     }
 }

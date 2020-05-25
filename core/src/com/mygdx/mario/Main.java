@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mygdx.mario.entities.Mario;
+import com.mygdx.mario.utils.Constants;
 
 import java.security.Key;
 
@@ -28,4 +29,8 @@ public class Main extends Game {
 		setScreen(new GamePlayScreen("Nivel1"));
 	}
 
+	/*@Override
+	public void render() {
+		super.render();
+	}*/
 }

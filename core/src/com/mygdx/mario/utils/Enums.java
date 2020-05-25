@@ -26,4 +26,10 @@ public class Enums {
         VIVO,
         MUERTO
     }
+
+    public enum Nivel{
+        Nivel1,
+        Nivel2,
+        Nivel3
+    }
 }
