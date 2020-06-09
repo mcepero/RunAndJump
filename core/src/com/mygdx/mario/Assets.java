@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
-import com.mygdx.mario.entities.Llave;
 import com.mygdx.mario.utils.Constants;
 
 public class Assets implements Disposable, AssetErrorListener {
@@ -19,7 +18,6 @@ public class Assets implements Disposable, AssetErrorListener {
     public MarioAssets marioAssets;
     public PlatformAssets platformAssets;
     public EnemimyAssets enemimyAssets;
-    public NubeAssets nubeAssets;
     public VidaAssets vidaAssets;
     public LlaveAssets llaveAssets;
     public FondoAssets fondoAssets;
@@ -44,7 +42,6 @@ public class Assets implements Disposable, AssetErrorListener {
         marioAssets = new MarioAssets(atlas);
         platformAssets = new PlatformAssets(atlas);
         enemimyAssets = new EnemimyAssets(atlas);
-        nubeAssets = new NubeAssets(atlas);
         vidaAssets = new VidaAssets(atlas);
         fondoAssets = new FondoAssets(atlas);
         llaveAssets = new LlaveAssets(atlas);
@@ -203,17 +200,6 @@ public class Assets implements Disposable, AssetErrorListener {
         }
     }
 
-    public class NubeAssets {
-
-        public final NinePatch nubeNinePatch;
-
-        public NubeAssets(TextureAtlas atlas) {
-            TextureAtlas.AtlasRegion region = atlas.findRegion(Constants.NUBE1);
-            int edge = Constants.NUBE_EDGE;
-            nubeNinePatch = new NinePatch(region, edge, edge, edge, edge);
-        }
-    }
-
     public class VidaAssets {
         public final TextureAtlas.AtlasRegion vida;
 
@@ -224,12 +210,8 @@ public class Assets implements Disposable, AssetErrorListener {
 
     public class LlaveAssets {
         public final TextureAtlas.AtlasRegion llave;
-        public final NinePatch llaveNinePatch;
 
         public LlaveAssets(TextureAtlas atlas) {
-            TextureAtlas.AtlasRegion region = atlas.findRegion(Constants.LLAVE);
-            int edge = Constants.LLAVE_EDGE;
-            llaveNinePatch = new NinePatch(region, edge, edge, edge, edge);
             llave = atlas.findRegion(Constants.LLAVE);
         }
     }
@@ -237,47 +219,28 @@ public class Assets implements Disposable, AssetErrorListener {
     public class FondoAssets {
 
         public final NinePatch fondoNinePatch;
-        public final NinePatch fondo2NinePatch;
-        public final NinePatch fondo3NinePatch;
 
         public FondoAssets(TextureAtlas atlas) {
             //fondo = atlas.findRegion(Constants.FONDO);
             TextureAtlas.AtlasRegion region = atlas.findRegion(Constants.FONDO);
             int edge = Constants.FONDO_EDGE;
             fondoNinePatch = new NinePatch(region, edge, edge, edge, edge);
-
-            TextureAtlas.AtlasRegion region2 = atlas.findRegion(Constants.FONDO2);
-            int edge2 = Constants.FONDO_EDGE;
-            fondo2NinePatch = new NinePatch(region2, edge2, edge2, edge2, edge2);
-
-            TextureAtlas.AtlasRegion region3 = atlas.findRegion(Constants.FONDO3);
-            int edge3 = Constants.FONDO_EDGE;
-            fondo3NinePatch = new NinePatch(region3, edge3, edge3, edge3, edge3);
         }
     }
 
     public class PinchosAssets {
         public final TextureAtlas.AtlasRegion pinchos;
-        //public final NinePatch pinchosNinePatch;
 
         public PinchosAssets(TextureAtlas atlas) {
             pinchos = atlas.findRegion(Constants.PINCHOS);
-            /*TextureAtlas.AtlasRegion region = atlas.findRegion(Constants.PINCHOS);
-            int edge = Constants.PINCHOS_EDGE;
-            pinchosNinePatch = new NinePatch(region, edge, edge, edge, edge);*/
-            //fondo = atlas.findRegion(Constants.FONDO);}
         }
     }
 
     public class PocionAssets {
         public final TextureAtlas.AtlasRegion pocion;
-        //public final NinePatch pocionNinePatch;
 
         public PocionAssets(TextureAtlas atlas) {
             pocion = atlas.findRegion(Constants.POCION);
-            /*TextureAtlas.AtlasRegion region = atlas.findRegion(Constants.POCION);
-            int edge = Constants.POCION_EDGE;
-            pocionNinePatch = new NinePatch(region, edge, edge, edge, edge);*/
         }
     }
 

@@ -1,11 +1,8 @@
 package com.mygdx.mario.entities;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.mario.Assets;
-import com.mygdx.mario.utils.Constants;
 import com.mygdx.mario.utils.Enums;
-import com.mygdx.mario.utils.Utils;
 
 public class Fondo {
     float y;
@@ -25,10 +22,6 @@ public class Fondo {
     public void render(SpriteBatch batch) {
         if (nivel.equals(Enums.Nivel.Nivel1)) {
             Assets.instance.fondoAssets.fondoNinePatch.draw(batch, x, y, width, height*2);
-        }else if(nivel.equals(Enums.Nivel.Nivel2)){
-            Assets.instance.fondoAssets.fondo2NinePatch.draw(batch, x, y, width*2, height*2);
-        }else if(nivel.equals(Enums.Nivel.Nivel3)){
-            Assets.instance.fondoAssets.fondo3NinePatch.draw(batch, x, y, width*2, height*2);
         }
     }
 

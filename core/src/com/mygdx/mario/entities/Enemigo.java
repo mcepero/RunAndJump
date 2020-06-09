@@ -1,13 +1,9 @@
 package com.mygdx.mario.entities;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.mygdx.mario.Assets;
 import com.mygdx.mario.Level;
@@ -15,12 +11,10 @@ import com.mygdx.mario.utils.Constants;
 import com.mygdx.mario.utils.Enums;
 import com.mygdx.mario.utils.Utils;
 
-import javax.xml.soap.Text;
-
 public class Enemigo {
 
     public Vector2 position;
-    public Vector2 lastFramePosition;
+    //public Vector2 lastFramePosition;
     public Vector2 velocity;
     public Plataforma plataforma;
     private long walkStartTime;
@@ -36,8 +30,8 @@ public class Enemigo {
         this.level=level;
         walkState= Enums.WalkState.WALKING;
         position = position = new Vector2(x,y);
-        lastFramePosition = new Vector2();
-        lastFramePosition.set(position);
+        //lastFramePosition = new Vector2();
+        //lastFramePosition.set(position);
         velocity = new Vector2();
         direction= Enums.Direction.LEFT;
         estadoEnemigo = Enums.EstadoEnemigo.VIVO;
@@ -49,7 +43,7 @@ public class Enemigo {
     public boolean eliminar=false;
     public void update(float delta) {
         if (acabar!=true) {
-            lastFramePosition.set(position);
+            //lastFramePosition.set(position);
             position.mulAdd(velocity, delta);
             if (direction == Enums.Direction.RIGHT)
                 moveRight(delta);
@@ -83,13 +77,13 @@ public class Enemigo {
                         direction= Enums.Direction.LEFT;
                     else
                         direction= Enums.Direction.RIGHT;
-                }else if(rectanguloEnemigo.x==bloque3.right){
+                }/*else if(rectanguloEnemigo.x==bloque3.right){
                     System.out.println("EL ENEMIGO HA CHOCADO!!");
                     if (direction== Enums.Direction.RIGHT)
                         direction= Enums.Direction.LEFT;
                     else
                         direction= Enums.Direction.RIGHT;
-                }
+                }*/
             }
         }
 

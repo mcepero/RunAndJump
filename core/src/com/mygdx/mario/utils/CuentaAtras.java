@@ -8,7 +8,7 @@ public class CuentaAtras extends TimerTask {
     int countdown = 5;
     Mario mario;
     public CuentaAtras(Mario mario) {
-        this.mario=mario;
+        this.mario = mario;
     }
 
     public void run() {

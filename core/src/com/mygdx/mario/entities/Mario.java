@@ -18,7 +18,7 @@ import com.mygdx.mario.utils.Utils;
 
 import java.util.Timer;
 
-public class Mario{
+public class Mario {
 
     public final static String TAG = Mario.class.getName();
 
@@ -70,9 +70,9 @@ public class Mario{
         if (jumpState != Enums.JumpState.JUMPING) {
             jumpState = Enums.JumpState.FALLING;
 
-            if (position.y - Constants.MARIO_EYE_HEIGHT < 0) {
+            if (position.y - Constants.PERSONAJE_EYE_HEIGHT < 0) {
                 jumpState = Enums.JumpState.GROUNDED;
-                position.y = Constants.MARIO_EYE_HEIGHT;
+                position.y = Constants.PERSONAJE_EYE_HEIGHT;
                 velocity.y = 0;
             }
 
@@ -80,7 +80,7 @@ public class Mario{
                 if (SobrePlataforma(plataforma)) {
                     jumpState = Enums.JumpState.GROUNDED;
                     velocity.y = 0;
-                    position.y = plataforma.top + Constants.MARIO_EYE_HEIGHT;
+                    position.y = plataforma.top + Constants.PERSONAJE_EYE_HEIGHT;
                 }
             }
 
@@ -88,7 +88,7 @@ public class Mario{
                 if (SobreBloque(bloque2)) {
                     jumpState = Enums.JumpState.GROUNDED;
                     velocity.y = 0;
-                    position.y = bloque2.top + Constants.MARIO_EYE_HEIGHT;
+                    position.y = bloque2.top + Constants.PERSONAJE_EYE_HEIGHT;
                     level.getBloques2().removeValue(bloque2,true);
                 }
             }
@@ -97,7 +97,7 @@ public class Mario{
                 if (SobreBloque3(bloque3)) {
                     jumpState = Enums.JumpState.GROUNDED;
                     velocity.y = 0;
-                    position.y = bloque3.top + Constants.MARIO_EYE_HEIGHT;
+                    position.y = bloque3.top + Constants.PERSONAJE_EYE_HEIGHT;
                 }
             }
 
@@ -152,30 +152,29 @@ public class Mario{
             endJump();
         }
 
-        if (position.x <= -4450)
-            position.x = -4450;
+        if (position.x <= -4550)
+            position.x = -4550;
         else if (position.x >= 2420)
             position.x = 2420;
 
-        Rectangle rectanguloMario = new Rectangle(
-                position.x,
-                position.y,
+        level.getEnemigos().begin();
+        Rectangle rectanguloPersonaje= new Rectangle(
+                position.x -Constants.PERSONAJE_STANCE_WIDTH /2 ,
+                position.y -  Constants.PERSONAJE_EYE_HEIGHT,
                 Assets.instance.marioAssets.jumping.getRegionWidth(),
                 Assets.instance.marioAssets.jumping.getRegionHeight());
-
+       // System.out.println("RM-X " + position.x + " RM-Y " + position.y + " f " + lastFramePosition.x +" e" + lastFramePosition.y );
         for (Enemigo enemigo : level.getEnemigos()) {
             Rectangle rectanguloEnemigo = new Rectangle(
                     enemigo.position.x,
-                    enemigo.position.y ,
+                    enemigo.position.y,
                     enemigo.width,
                     enemigo.height
             );
 
-            Timer timer = new Timer();
-            CuentaAtras cuenta = new CuentaAtras(this);
-            if (rectanguloMario.overlaps(rectanguloEnemigo)) {
+            if (rectanguloPersonaje.overlaps(rectanguloEnemigo)) {
                 if (choque == Enums.Choque.NO) {
-                    position = new Vector2(-4450, 30);
+                    position = new Vector2(-4450, 0);
                     vidasPersonaje--;
                 } else if (choque == Enums.Choque.SI) {
                     enemigo.estadoEnemigo = Enums.EstadoEnemigo.MUERTO;
@@ -192,7 +191,8 @@ public class Mario{
                 }
             }
         }
-
+        level.getEnemigos().end();
+        level.getVidas().begin();
         for (Vida vida : level.getVidas()) {
             Rectangle rectanguloVida = new Rectangle(
                     vida.position.x/* - Constants.VIDA_COLLISION_RADIUS*/,
@@ -201,55 +201,68 @@ public class Mario{
                     vida.height//2 * Constants.VIDA_COLLISION_RADIUS
             );
 
-            if (rectanguloMario.overlaps(rectanguloVida)) {
+            if (rectanguloPersonaje.overlaps(rectanguloVida)) {
                 level.getVidas().removeValue(vida, true);
                 vidasPersonaje++;
             }
         }
+        level.getVidas().end();
 
         for (Llave llave : level.getLlaves()) {
             Rectangle rectanguloLlave = new Rectangle(
-                    llave.position.x,
-                    llave.position.y,
-                    llave.width,
-                    llave.height
+                    llave.x,
+                    llave.y+10,
+                    Assets.instance.llaveAssets.llave.getRegionWidth(),
+                    Assets.instance.llaveAssets.llave.getRegionHeight()
             );
 
-            if (rectanguloMario.overlaps(rectanguloLlave)) {
+            if (rectanguloPersonaje.overlaps(rectanguloLlave)) {
                 level.getLlaves().removeValue(llave, true);
-                System.out.println("HAS GANADO!!!!");
             }
         }
 
         for (Pinchos pinchos : level.getPinchos()) {
             Rectangle rectanguloPinchos = new Rectangle(
-                    pinchos.position.x+Constants.PINCHOS_COLLISION_RADIUS,
-                    pinchos.position.y+Constants.PINCHOS_COLLISION_RADIUS,
+                    pinchos.position.x-Constants.PINCHOS_COLLISION_RADIUS,
+                    pinchos.position.y-Constants.PINCHOS_COLLISION_RADIUS,
                     pinchos.width,
                     pinchos.height
             );
 
-            if (rectanguloMario.overlaps(rectanguloPinchos)) {
+            if (rectanguloPersonaje.overlaps(rectanguloPinchos)) {
                 vidasPersonaje--;
-                position = new Vector2(-4450, 30);
+                position = new Vector2(-4450, 0);
             }
         }
 
+        level.getBolas().begin();
         for (Bola bola : level.getBolas()) {
             Rectangle rectanguloBola = new Rectangle(
                     bola.position.x,
                     bola.position.y,
-                    bola.width,
-                    bola.height
+                    Assets.instance.bolaAssets.bola.getRegionWidth(),
+                    Assets.instance.bolaAssets.bola.getRegionHeight()
             );
 
-            if (rectanguloMario.overlaps(rectanguloBola)) {
+            if (rectanguloPersonaje.overlaps(rectanguloBola)) {
+                System.out.println("CHOQUEEEEEE");
+                System.out.println("Rx " + rectanguloBola.x + " Ry " + rectanguloBola.y + " width " + rectanguloBola.width + " height " + rectanguloBola.height);
+                System.out.println("x " +bola.position.x + " y " + bola.position.y);
+                System.out.println("MARIO: " + rectanguloPersonaje.x+ " " +rectanguloPersonaje.y + " BOla: " + rectanguloBola.x + " " + rectanguloBola.y);
+                vidasPersonaje--;
+                position = new Vector2(-4450, 0);
+            }
+
+            /*System.out.println(lastFramePosition.dst(bola.position));
+            if (position.dst(bola.position) < 25.0) {
+
                 System.out.println("CHOQUEEEEEE");
                 System.out.println("MARIO: " + rectanguloMario.x+ " " +rectanguloMario.y + " BOla: " + rectanguloBola.x + " " + rectanguloBola.y);
                 vidasPersonaje--;
                 position = new Vector2(-4450, 30);
-            }
+            }*/
         }
+        level.getBolas().end();
 
         for (Pocion pocion : level.getPociones()) {
             Rectangle rectanguloPociones = new Rectangle(
@@ -259,13 +272,18 @@ public class Mario{
                     pocion.height
             );
 
-            if (rectanguloMario.overlaps(rectanguloPociones)) {
+            if (rectanguloPersonaje.overlaps(rectanguloPociones)) {
                 choque = Enums.Choque.SI;
                 Timer timer = new Timer();
                 cuentaAtras = new CuentaAtras(this);
                 timer.schedule(cuentaAtras, 0, 1000);
-                //cuentaAtras.setCountdown(5);
+                cuentaAtras.setCountdown(5);
                 level.getPociones().removeValue(pocion, true);
+                if (choque==Enums.Choque.NO){
+                    timer.cancel();
+                    timer.purge();
+                }
+
             }
         }
 
@@ -276,11 +294,11 @@ public class Mario{
         boolean pieDerEn = false;
         boolean encima = false;
 
-        if (lastFramePosition.y - Constants.MARIO_EYE_HEIGHT >= plataforma.top &&
-                position.y - Constants.MARIO_EYE_HEIGHT < plataforma.top) {
+        if (lastFramePosition.y - Constants.PERSONAJE_EYE_HEIGHT >= plataforma.top &&
+                position.y - Constants.PERSONAJE_EYE_HEIGHT < plataforma.top) {
 
-            float pieIzq = position.x - Constants.MARIO_STANCE_WIDTH / 2;
-            float pieDer = position.x + Constants.MARIO_STANCE_WIDTH / 2;
+            float pieIzq = position.x - Constants.PERSONAJE_STANCE_WIDTH / 2;
+            float pieDer = position.x + Constants.PERSONAJE_STANCE_WIDTH / 2;
 
             pieIzqEn = (plataforma.left < pieIzq && plataforma.right > pieIzq);
             pieDerEn = (plataforma.left < pieDer && plataforma.right > pieDer);
@@ -295,11 +313,11 @@ public class Mario{
         boolean pieDerEn = false;
         boolean encima = false;
 
-        if (lastFramePosition.y - Constants.MARIO_EYE_HEIGHT >= bloque2.top &&
-                position.y - Constants.MARIO_EYE_HEIGHT < bloque2.top) {
+        if (lastFramePosition.y - Constants.PERSONAJE_EYE_HEIGHT >= bloque2.top &&
+                position.y - Constants.PERSONAJE_EYE_HEIGHT < bloque2.top) {
 
-            float pieIzq = position.x - Constants.MARIO_STANCE_WIDTH / 2;
-            float pieDer = position.x + Constants.MARIO_STANCE_WIDTH / 2;
+            float pieIzq = position.x - Constants.PERSONAJE_STANCE_WIDTH / 2;
+            float pieDer = position.x + Constants.PERSONAJE_STANCE_WIDTH / 2;
 
             pieIzqEn = (bloque2.left < pieIzq && bloque2.right > pieIzq);
             pieDerEn = (bloque2.left < pieDer && bloque2.right > pieDer);
@@ -314,11 +332,11 @@ public class Mario{
         boolean pieDerEn = false;
         boolean encima = false;
 
-        if (lastFramePosition.y - Constants.MARIO_EYE_HEIGHT >= bloque3.top &&
-                position.y - Constants.MARIO_EYE_HEIGHT < bloque3.top) {
+        if (lastFramePosition.y - Constants.PERSONAJE_EYE_HEIGHT >= bloque3.top &&
+                position.y - Constants.PERSONAJE_EYE_HEIGHT < bloque3.top) {
 
-            float pieIzq = position.x - Constants.MARIO_STANCE_WIDTH / 2;
-            float pieDer = position.x + Constants.MARIO_STANCE_WIDTH / 2;
+            float pieIzq = position.x - Constants.PERSONAJE_STANCE_WIDTH / 2;
+            float pieDer = position.x + Constants.PERSONAJE_STANCE_WIDTH / 2;
 
             pieIzqEn = (bloque3.left < pieIzq && bloque3.right > pieIzq);
             pieDerEn = (bloque3.left < pieDer && bloque3.right > pieDer);
@@ -334,7 +352,7 @@ public class Mario{
         }
         walkState = Enums.WalkState.WALKING;
         facing = Enums.Direction.LEFT;
-        position.x -= delta * Constants.MARIO_MOVE_SPEED;
+        position.x -= delta * Constants.PERSONAJE_MOVE_SPEED;
     }
 
     private void moveRight(float delta) {
@@ -343,7 +361,7 @@ public class Mario{
         }
         walkState = Enums.WalkState.WALKING;
         facing = Enums.Direction.RIGHT;
-        position.x += delta * Constants.MARIO_MOVE_SPEED;
+        position.x += delta * Constants.PERSONAJE_MOVE_SPEED;
     }
 
     private void startJump() {
@@ -388,8 +406,8 @@ public class Mario{
         }
 
         Utils.drawTextureRegion(batch, region,
-                position.x - Constants.MARIO_EYE_POSITION.x,
-                position.y - Constants.MARIO_EYE_POSITION.y
+                position.x - Constants.PERSONAJE_EYE_POSITION.x,
+                position.y - Constants.PERSONAJE_EYE_POSITION.y
         );
     }
 

@@ -33,7 +33,7 @@ public class ControlesMovil extends InputAdapter {
         jumpCenter = new Vector2();
 
         recalculateButtonPositions();
-        this.mario=mario;
+        this.mario = mario;
     }
 
 

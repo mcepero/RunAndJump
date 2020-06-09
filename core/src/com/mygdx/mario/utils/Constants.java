@@ -30,12 +30,12 @@ public class Constants {
     public static final float WORLD_SIZE = 400;
     public static final float WALK_LOOP_DURATION = 0.25f;
     public static final float CHASE_CAM_MOVE_SPEED = WORLD_SIZE;
-    public static final float MARIO_MOVE_SPEED = 120;
-    public static final Vector2 MARIO_EYE_POSITION = new Vector2(16, 15);
-    public static final float MARIO_EYE_HEIGHT = 16.0f;
-    public static final float MARIO_STANCE_WIDTH = 32.0f;
-    public static final Vector2 MARIO_CANNON_OFFSET = new Vector2(12, -7);
-    public static final float MARIO_HEIGHT = 23.0f;
+    public static final float PERSONAJE_MOVE_SPEED = 120;
+    public static final Vector2 PERSONAJE_EYE_POSITION = new Vector2(16, 15);
+    public static final float PERSONAJE_EYE_HEIGHT = 16.0f;
+    public static final float PERSONAJE_STANCE_WIDTH = 32.0f;
+    public static final Vector2 PERSONAJE_CANNON_OFFSET = new Vector2(12, -7);
+    public static final float PERSONAJE_HEIGHT = 23.0f;
     public static final float JUMP_SPEED = 200;
     public static final float MAX_JUMP_DURATION = .17f;
 
@@ -98,11 +98,11 @@ public class Constants {
     public static final float LLAVE_COLLISION_RADIUS = 7;
 
     public static final String BOLA = "bola";
-    public static final float BOLA_CENTER = 8f;
+    public static final Vector2 BOLA_CENTER = new Vector2(8,8);
     public static final float BOLA_SIZE = 16;
     public static final float BOLA_MOVE_SPEED = 100;
    // public static final Vector2 BOLA_EYE_POSITION = new Vector2(16, 35);
-    public static final float BOLA_COLLISION_RADIUS = 15;
+    public static final float BOLA_COLLISION_RADIUS = 5;
 
     public static final String LEVEL_DIR = "levels";
     public static final String LEVEL_FILE_EXTENSION = "dt";
@@ -130,13 +130,14 @@ public class Constants {
     public static final String LEVEL_BLOQUE3_TAG = "Bloque3";
     public static final String LEVEL_BOLA_TAG = "Bola";
 
-
+    public static final String REINICIAR_BUTTON = "reiniciar.png";
     public static final float HUD_VIEWPORT_SIZE = 480;
     public static final float HUD_MARGIN = 2;
 
 
     public static final float LEVEL_END_DURATION = 5;
     public static final String GAME_OVER_MESSAGE = "¡¡¡Has perdido!!!";
+    public static final String VICTORIA_MENSAJE = "¡¡¡Has ganado!!!";
     public static final String FONT_FILE = "font/header.fnt";
 
     public static final String FONDO = "fondo";

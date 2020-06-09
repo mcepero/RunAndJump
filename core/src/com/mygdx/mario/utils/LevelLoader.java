@@ -12,8 +12,6 @@ import com.mygdx.mario.entities.Bola;
 import com.mygdx.mario.entities.Enemigo;
 import com.mygdx.mario.entities.Fondo;
 import com.mygdx.mario.entities.Llave;
-import com.mygdx.mario.entities.Mario;
-import com.mygdx.mario.entities.Nube;
 import com.mygdx.mario.entities.Pinchos;
 import com.mygdx.mario.entities.Plataforma;
 import com.mygdx.mario.entities.Pocion;
@@ -79,25 +77,18 @@ public class LevelLoader {
             plataformas.add(plataforma);
 
             final String identifier = (String) platformObject.get(Constants.LEVEL_IDENTIFIER_KEY);
-            System.out.println(identifier);
+
             if (identifier != null && identifier.equals(Constants.LEVEL_ENEMY_TAG)) {
-                final Enemigo enemigo = new Enemigo(x,y,width,height,level);
-                level.getEnemigos().add(enemigo);
+                level.getEnemigos().add(new Enemigo(x,y,width,height,level));
                 plataformas.removeValue(plataforma,true);
             }
 
-            if (identifier != null && identifier.equals(Constants.LEVEL_NUBE_TAG)) {
-                final Nube nube = new Nube(x,y, width, height);
-                level.getNubes().add(nube);
-                plataformas.removeValue(plataforma,true);
-            }
-
-            if (identifier != null && identifier.equals(Constants.LEVEL_MARIO_TAG)) {
+           /* if (identifier != null && identifier.equals(Constants.LEVEL_MARIO_TAG)) {
                 final Mario mario = new Mario(new Vector2(-4450,0),level);
                 mario.setVidasPersonaje(vidas);
                 level.setMario(mario);
                 plataformas.removeValue(plataforma,true);
-            }
+            }*/
 
             if (identifier != null && identifier.equals(Constants.LEVEL_VIDA_TAG)) {
                 final Vida vida = new Vida(new Vector2(x,y),width,height);

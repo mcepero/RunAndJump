@@ -28,4 +28,6 @@ public class Bloque3 {
         //float height = top - bottom;
         Assets.instance.bloque3Assets.bloque3NinePatch.draw(batch, position.x, position.y, width, height);
     }
+
+
 }

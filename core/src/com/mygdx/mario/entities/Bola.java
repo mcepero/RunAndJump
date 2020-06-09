@@ -7,7 +7,6 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.mygdx.mario.Assets;
 import com.mygdx.mario.Level;
 import com.mygdx.mario.utils.Constants;
-import com.mygdx.mario.utils.Enums;
 import com.mygdx.mario.utils.Utils;
 
 public class Bola {
@@ -23,6 +22,10 @@ public class Bola {
     public Bola(Vector2 position, float width, float height, Level level) {
         this.plataforma=plataforma;
         this.position = position;
+
+        //this.position.x=position.x+12;
+        //this.position.y=position.y+-7;
+
         velocity = new Vector2();
         this.level=level;
         this.width=width;

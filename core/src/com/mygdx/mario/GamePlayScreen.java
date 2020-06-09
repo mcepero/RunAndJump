@@ -19,7 +19,6 @@ import com.mygdx.mario.utils.YouLostHUD;
 
 public class GamePlayScreen extends ScreenAdapter {
 
-
     Level level;
     public ExtendViewport gameplayViewport;
 
@@ -31,6 +30,7 @@ public class GamePlayScreen extends ScreenAdapter {
     private TiempoChoqueHUD tiempoChoqueHUD;
     long levelEndOverlayStartTime;
     private ControlesMovil controlesMovil;
+    private String numeroNivel = "Nivel1";
 
     public String nivel;
 
@@ -53,12 +53,19 @@ public class GamePlayScreen extends ScreenAdapter {
 
         hud = new MarioHUD();
         tiempoChoqueHUD = new TiempoChoqueHUD();
-        gameOverOverlay = new YouLostHUD();
+        gameOverOverlay = new YouLostHUD(this);
         controlesMovil = new ControlesMovil(level.getMario());
 
         if (onMobile()) {
             Gdx.input.setInputProcessor(controlesMovil);
         }
+
+
+        /*AssetManager amm = new AssetManager();
+        Assets.instance.init(am);
+        batch = new SpriteBatch();
+        hud = new MarioHUD();
+        starNewLevel();*/
     }
 
     @Override
@@ -96,6 +103,7 @@ public class GamePlayScreen extends ScreenAdapter {
         if (level.getMario().getChoque()== Enums.Choque.SI){
             tiempoChoqueHUD.render(batch,level.getMario().getCuentaAtras().getCountdown());
         }
+
         renderNuevoNivel(batch);
         batch.end();
         renderLevelEndOverlays(batch);
@@ -124,12 +132,41 @@ public class GamePlayScreen extends ScreenAdapter {
         }
     }
 
-    private void renderNuevoNivel(SpriteBatch batch) {
+    public void renderNuevoNivel(SpriteBatch batch) {
         if (level.getLlaves().size==0) {
-            level = LevelLoader.load("Nivel2", gameplayViewport,level.getMario().getVidasPersonaje());
+            if (numeroNivel.equals("Nivel1")) {
+                level = LevelLoader.load("Nivel2", gameplayViewport, level.getMario().getVidasPersonaje());
+                numeroNivel="Nivel2";
+            }else if(numeroNivel.equals("Nivel2")){
+                level = LevelLoader.load("Nivel3", gameplayViewport, level.getMario().getVidasPersonaje());
+                numeroNivel="Nivel3";
+            }
             chaseCam = new com.mygdx.mario.utils.ChaseCam(gameplayViewport.getCamera(), level.getMario());
             resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             controlesMovil.mario = level.getMario();
         }
+    }
+
+    public void renderNuevaPartida(SpriteBatch batch) {
+        level = LevelLoader.load("Nivel1", gameplayViewport, level.getMario().getVidasPersonaje());
+        chaseCam = new com.mygdx.mario.utils.ChaseCam(gameplayViewport.getCamera(), level.getMario());
+        resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        controlesMovil.mario = level.getMario();
+    }
+
+    public Level getLevel() {
+        return level;
+    }
+
+    public void setLevel(Level level) {
+        this.level = level;
+    }
+
+    public String getNivel() {
+        return nivel;
+    }
+
+    public void setNivel(String nivel) {
+        this.nivel = nivel;
     }
 }

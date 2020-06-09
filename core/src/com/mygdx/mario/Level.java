@@ -12,7 +12,6 @@ import com.mygdx.mario.entities.Enemigo;
 import com.mygdx.mario.entities.Fondo;
 import com.mygdx.mario.entities.Llave;
 import com.mygdx.mario.entities.Mario;
-import com.mygdx.mario.entities.Nube;
 import com.mygdx.mario.entities.Pinchos;
 import com.mygdx.mario.entities.Plataforma;
 import com.mygdx.mario.entities.Pocion;
@@ -26,7 +25,6 @@ public class Level {
     public Mario mario;
     Array<Plataforma> plataformas;
     private DelayedRemovalArray<Enemigo> enemigos;
-    Array<Nube> nubes;
     private DelayedRemovalArray<Vida> vidas;
     private DelayedRemovalArray<Llave> llaves;
     private DelayedRemovalArray<Bola> bolas;
@@ -40,7 +38,6 @@ public class Level {
     public Level(Viewport viewport) {
         this.viewport = viewport;
         plataformas = new Array<Plataforma>();
-        nubes = new Array<Nube>();
         fondos = new Array<Fondo>();
         pinchos = new Array<Pinchos>();
         pociones = new Array<Pocion>();
@@ -64,17 +61,12 @@ public class Level {
     }
 
     public void render(SpriteBatch batch) {
-
         for (Fondo fondo : fondos) {
             fondo.render(batch);
         }
 
         for (Plataforma plataforma : plataformas) {
             plataforma.render(batch);
-        }
-
-        for (Nube nube : nubes) {
-            nube.render(batch);
         }
 
         for (Vida vida : vidas) {
@@ -113,7 +105,7 @@ public class Level {
     }
 
     private void initializeDebugLevel() {
-        //mario = new Mario(new Vector2(-650, 30),this);
+        mario = new Mario(new Vector2(-4450,0),this);
         enemigos = new DelayedRemovalArray<Enemigo>();
         vidas = new DelayedRemovalArray<Vida>();
         llaves = new DelayedRemovalArray<Llave>();
@@ -150,14 +142,6 @@ public class Level {
 
     public void setPlataformas(Array<Plataforma> plataformas) {
         this.plataformas = plataformas;
-    }
-
-    public Array<Nube> getNubes() {
-        return nubes;
-    }
-
-    public void setNubes(Array<Nube> nubes) {
-        this.nubes = nubes;
     }
 
     public void setVidas(DelayedRemovalArray<Vida> vidas) {
