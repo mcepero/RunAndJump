@@ -118,7 +118,7 @@ public class Constants {
     public static final String LEVEL_IDENTIFIER_KEY = "itemIdentifier";
     public static final String LEVEL_ENEMY_TAG = "Enemigo";
     public static final String LEVEL_NUBE_TAG = "Nube";
-    public static final String LEVEL_MARIO_TAG = "Mario";
+    public static final String LEVEL_PERSONAJE_TAG = "Mario";
     public static final String LEVEL_VIDA_TAG = "Vida";
     public static final String LEVEL_LLAVE_TAG = "Llave";
     public static final String LEVEL_FONDO_TAG = "Fondo";
@@ -129,6 +129,11 @@ public class Constants {
     public static final String LEVEL_BLOQUE2_TAG = "Bloque2";
     public static final String LEVEL_BLOQUE3_TAG = "Bloque3";
     public static final String LEVEL_BOLA_TAG = "Bola";
+    public static final String NUEVA_PARTIDA = "nuevaPartida.png";
+    public static final String REANUDAR = "reanudar.png";
+    public static final String FONDO_INICIO = "fondo.png";
+    public static final String LOGO = "logo.png";
+
 
     public static final String REINICIAR_BUTTON = "reiniciar.png";
     public static final float HUD_VIEWPORT_SIZE = 480;
@@ -138,7 +143,7 @@ public class Constants {
     public static final float LEVEL_END_DURATION = 5;
     public static final String GAME_OVER_MESSAGE = "¡¡¡Has perdido!!!";
     public static final String VICTORIA_MENSAJE = "¡¡¡Has ganado!!!";
-    public static final String FONT_FILE = "font/header.fnt";
+    public static final String FONT_FILE = "C:\\Users\\manue\\AndroidStudioProjects\\Mario\\android\\assets\\font\\Run!.ttf";
 
     public static final String FONDO = "fondo";
     public static final String FONDO2 = "fondo2";
@@ -158,7 +163,7 @@ public class Constants {
     public static final String BOTON_IZQUIERDA = "izquierda";
     public static final String BOTON_DERECHA = "derecha";
     public static final String BOTON_SALTAR = "saltar";
-    public static final Vector2 BUTTON_CENTER = new Vector2(15, 15);
+    public static final Vector2 BUTTON_CENTER = new Vector2(16, 16);
     public static final float BUTTON_RADIUS = 32;
 }
 

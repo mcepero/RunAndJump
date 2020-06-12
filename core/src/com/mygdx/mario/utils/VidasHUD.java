@@ -8,11 +8,11 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.mario.Assets;
 
-public class MarioHUD {
+public class VidasHUD {
     public final Viewport viewport;
     final BitmapFont font;
 
-    public MarioHUD() {
+    public VidasHUD() {
         this.viewport = new ExtendViewport(Constants.HUD_VIEWPORT_SIZE, Constants.HUD_VIEWPORT_SIZE);
         font = new BitmapFont();
         font.getData().setScale(1);

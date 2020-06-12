@@ -75,15 +75,10 @@ public class Enemigo {
                 if(rectanguloEnemigo.overlaps(rectanguloBloque)) {
                     if (direction== Enums.Direction.RIGHT)
                         direction= Enums.Direction.LEFT;
-                    else
+                    else if(direction== Enums.Direction.LEFT)
                         direction= Enums.Direction.RIGHT;
-                }/*else if(rectanguloEnemigo.x==bloque3.right){
-                    System.out.println("EL ENEMIGO HA CHOCADO!!");
-                    if (direction== Enums.Direction.RIGHT)
-                        direction= Enums.Direction.LEFT;
-                    else
-                        direction= Enums.Direction.RIGHT;
-                }*/
+                }
+
             }
         }
 

@@ -34,7 +34,6 @@ public class Level {
     private Array<Bloque2> bloques2;
     private Array<Bloque3> bloques3;
 
-
     public Level(Viewport viewport) {
         this.viewport = viewport;
         plataformas = new Array<Plataforma>();
@@ -106,6 +105,7 @@ public class Level {
 
     private void initializeDebugLevel() {
         mario = new Mario(new Vector2(-4450,0),this);
+        mario.setTerminado(false);
         enemigos = new DelayedRemovalArray<Enemigo>();
         vidas = new DelayedRemovalArray<Vida>();
         llaves = new DelayedRemovalArray<Llave>();

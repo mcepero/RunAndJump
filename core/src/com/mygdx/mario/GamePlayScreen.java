@@ -2,8 +2,10 @@ package com.mygdx.mario;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -12,7 +14,7 @@ import com.mygdx.mario.utils.Constants;
 import com.mygdx.mario.utils.ControlesMovil;
 import com.mygdx.mario.utils.Enums;
 import com.mygdx.mario.utils.LevelLoader;
-import com.mygdx.mario.utils.MarioHUD;
+import com.mygdx.mario.utils.VidasHUD;
 import com.mygdx.mario.utils.TiempoChoqueHUD;
 import com.mygdx.mario.utils.Utils;
 import com.mygdx.mario.utils.YouLostHUD;
@@ -25,17 +27,22 @@ public class GamePlayScreen extends ScreenAdapter {
     SpriteBatch batch;
     com.mygdx.mario.utils.ChaseCam chaseCam;
 
-    private MarioHUD hud;
+    private VidasHUD hud;
     private YouLostHUD gameOverOverlay;
     private TiempoChoqueHUD tiempoChoqueHUD;
     long levelEndOverlayStartTime;
     private ControlesMovil controlesMovil;
     private String numeroNivel = "Nivel1";
-
+    //Mario mario;
     public String nivel;
+    Sound sound;
+    Estado estadoPartida;
 
     public GamePlayScreen(String nivel) {
         this.nivel=nivel;
+        sound = Gdx.audio.newSound(Gdx.files.internal("sound/principal.mp3"));
+        sound.loop(0.5f);
+        estadoPartida=Estado.JUGANDO;
     }
 
     @Override
@@ -48,10 +55,10 @@ public class GamePlayScreen extends ScreenAdapter {
         Gdx.gl.glClearColor(0,1,1,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         level = LevelLoader.load(nivel, level.getViewport(),3);
-
+        //mario=level.getMario();
         chaseCam = new com.mygdx.mario.utils.ChaseCam(gameplayViewport.getCamera(), level.getMario());
 
-        hud = new MarioHUD();
+        hud = new VidasHUD();
         tiempoChoqueHUD = new TiempoChoqueHUD();
         gameOverOverlay = new YouLostHUD(this);
         controlesMovil = new ControlesMovil(level.getMario());
@@ -64,7 +71,7 @@ public class GamePlayScreen extends ScreenAdapter {
         /*AssetManager amm = new AssetManager();
         Assets.instance.init(am);
         batch = new SpriteBatch();
-        hud = new MarioHUD();
+        hud = new VidasHUD();
         starNewLevel();*/
     }
 
@@ -104,9 +111,9 @@ public class GamePlayScreen extends ScreenAdapter {
             tiempoChoqueHUD.render(batch,level.getMario().getCuentaAtras().getCountdown());
         }
 
-        renderNuevoNivel(batch);
+        nuevoNivel(batch);
         batch.end();
-        renderLevelEndOverlays(batch);
+        nivelAcabado(batch);
 
         if (onMobile()) {
             controlesMovil.render(batch);
@@ -118,13 +125,13 @@ public class GamePlayScreen extends ScreenAdapter {
         return Gdx.app.getType() == Application.ApplicationType.Android || Gdx.app.getType() == Application.ApplicationType.iOS;
     }
 
-    private void renderLevelEndOverlays(SpriteBatch batch) {
-        if (level.getMario().getVidasPersonaje()<=0) {
+    private void nivelAcabado(SpriteBatch batch) {
+        if (level.getMario().getVidasPersonaje()<=0 || (level.getMario().isTerminado()==true && numeroNivel.equals("Nivel3"))) {
             if (levelEndOverlayStartTime == 0) {
                 levelEndOverlayStartTime = TimeUtils.nanoTime();
                 gameOverOverlay.init();
             }
-
+            sound.dispose();
             gameOverOverlay.render(batch);
             if (Utils.secondsSince(levelEndOverlayStartTime) > Constants.LEVEL_END_DURATION) {
                 levelEndOverlayStartTime = 0;
@@ -132,7 +139,7 @@ public class GamePlayScreen extends ScreenAdapter {
         }
     }
 
-    public void renderNuevoNivel(SpriteBatch batch) {
+    public void nuevoNivel(SpriteBatch batch) {
         if (level.getLlaves().size==0) {
             if (numeroNivel.equals("Nivel1")) {
                 level = LevelLoader.load("Nivel2", gameplayViewport, level.getMario().getVidasPersonaje());
@@ -147,9 +154,11 @@ public class GamePlayScreen extends ScreenAdapter {
         }
     }
 
-    public void renderNuevaPartida(SpriteBatch batch) {
+    public void nuevaPartida(SpriteBatch batch) {
         level = LevelLoader.load("Nivel1", gameplayViewport, level.getMario().getVidasPersonaje());
         chaseCam = new com.mygdx.mario.utils.ChaseCam(gameplayViewport.getCamera(), level.getMario());
+        sound = Gdx.audio.newSound(Gdx.files.internal("sound/principal.mp3"));
+        sound.loop(0.5f);
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         controlesMovil.mario = level.getMario();
     }
@@ -169,4 +178,26 @@ public class GamePlayScreen extends ScreenAdapter {
     public void setNivel(String nivel) {
         this.nivel = nivel;
     }
+
+    public String getNumeroNivel() {
+        return numeroNivel;
+    }
+
+    public void setNumeroNivel(String numeroNivel) {
+        this.numeroNivel = numeroNivel;
+    }
+
+    public Estado getEstadoPartida() {
+        return estadoPartida;
+    }
+
+    public void setEstadoPartida(Estado estadoPartida) {
+        this.estadoPartida = estadoPartida;
+    }
+
+    public enum Estado{
+        PAUSA,
+        JUGANDO
+    }
+
 }

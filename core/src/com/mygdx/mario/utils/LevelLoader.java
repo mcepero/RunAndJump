@@ -31,7 +31,7 @@ public class LevelLoader {
 
         String path = Constants.LEVEL_DIR + File.separator + nombre + "." + Constants.LEVEL_FILE_EXTENSION;
         Level level = new Level(viewport);
-        //level.getMario().setVidasPersonaje(vidas);
+        level.getMario().setVidasPersonaje(vidas);
         FileHandle file = Gdx.files.internal(path);
         JSONParser parser = new JSONParser();
 
@@ -83,7 +83,7 @@ public class LevelLoader {
                 plataformas.removeValue(plataforma,true);
             }
 
-           /* if (identifier != null && identifier.equals(Constants.LEVEL_MARIO_TAG)) {
+           /* if (identifier != null && identifier.equals(Constants.LEVEL_PERSONAJE_TAG)) {
                 final Mario mario = new Mario(new Vector2(-4450,0),level);
                 mario.setVidasPersonaje(vidas);
                 level.setMario(mario);

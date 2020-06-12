@@ -2,6 +2,7 @@ package com.mygdx.mario.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
@@ -34,6 +35,8 @@ public class Mario {
     Enums.JumpState jumpState;
     Enums.WalkState walkState;
     Enums.Choque choque;
+    private boolean terminado=false;
+
 
     long walkStartTime;
     long jumpStartTime;
@@ -152,6 +155,10 @@ public class Mario {
             endJump();
         }
 
+        if (Gdx.input.isKeyPressed(Input.Keys.UP) || botonSaltar) {
+
+        }
+
         if (position.x <= -4550)
             position.x = -4550;
         else if (position.x >= 2420)
@@ -177,6 +184,8 @@ public class Mario {
                     position = new Vector2(-4450, 0);
                     vidasPersonaje--;
                 } else if (choque == Enums.Choque.SI) {
+                    Sound sound = Gdx.audio.newSound(Gdx.files.internal("sound/enemigo.wav"));
+                    sound.play(0.5f);
                     enemigo.estadoEnemigo = Enums.EstadoEnemigo.MUERTO;
                     float walkTimeSeconds = Utils.secondsSince(enemigo.getWalkStartTime());
                     if (enemigo.direction == Enums.Direction.LEFT) {
@@ -202,6 +211,8 @@ public class Mario {
             );
 
             if (rectanguloPersonaje.overlaps(rectanguloVida)) {
+                Sound sound = Gdx.audio.newSound(Gdx.files.internal("sound/vida.wav"));
+                sound.play(0.5f);
                 level.getVidas().removeValue(vida, true);
                 vidasPersonaje++;
             }
@@ -217,7 +228,10 @@ public class Mario {
             );
 
             if (rectanguloPersonaje.overlaps(rectanguloLlave)) {
+                Sound sound = Gdx.audio.newSound(Gdx.files.internal("sound/llave.wav"));
+                sound.play(0.5f);
                 level.getLlaves().removeValue(llave, true);
+                terminado=true;
             }
         }
 
@@ -273,6 +287,8 @@ public class Mario {
             );
 
             if (rectanguloPersonaje.overlaps(rectanguloPociones)) {
+                Sound sound = Gdx.audio.newSound(Gdx.files.internal("sound/pocion.wav"));
+                sound.play(0.5f);
                 choque = Enums.Choque.SI;
                 Timer timer = new Timer();
                 cuentaAtras = new CuentaAtras(this);
@@ -441,5 +457,13 @@ public class Mario {
 
     public void setCuentaAtras(CuentaAtras cuentaAtras) {
         this.cuentaAtras = cuentaAtras;
+    }
+
+    public boolean isTerminado() {
+        return terminado;
+    }
+
+    public void setTerminado(boolean terminado) {
+        this.terminado = terminado;
     }
 }
