@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -36,12 +37,15 @@ public class GamePlayScreen extends ScreenAdapter {
     //Mario mario;
     public String nivel;
     Sound sound;
+    Music music;
     Estado estadoPartida;
 
     public GamePlayScreen(String nivel) {
         this.nivel=nivel;
-        sound = Gdx.audio.newSound(Gdx.files.internal("sound/principal.mp3"));
-        sound.loop(0.5f);
+        music = Gdx.audio.newMusic(Gdx.files.internal("sound/principal2.mp3"));
+        music.setVolume(0.2f);
+        music.setLooping(true);
+        music.play();
         estadoPartida=Estado.JUGANDO;
     }
 
@@ -91,6 +95,7 @@ public class GamePlayScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         Assets.instance.dispose();
+        music.dispose();
     }
 
     @Override
@@ -131,7 +136,7 @@ public class GamePlayScreen extends ScreenAdapter {
                 levelEndOverlayStartTime = TimeUtils.nanoTime();
                 gameOverOverlay.init();
             }
-            sound.dispose();
+            //sound.dispose();
             gameOverOverlay.render(batch);
             if (Utils.secondsSince(levelEndOverlayStartTime) > Constants.LEVEL_END_DURATION) {
                 levelEndOverlayStartTime = 0;
@@ -155,10 +160,13 @@ public class GamePlayScreen extends ScreenAdapter {
     }
 
     public void nuevaPartida(SpriteBatch batch) {
+        music.dispose();
         level = LevelLoader.load("Nivel1", gameplayViewport, level.getMario().getVidasPersonaje());
         chaseCam = new com.mygdx.mario.utils.ChaseCam(gameplayViewport.getCamera(), level.getMario());
-        sound = Gdx.audio.newSound(Gdx.files.internal("sound/principal.mp3"));
-        sound.loop(0.5f);
+        music = Gdx.audio.newMusic(Gdx.files.internal("sound/principal2.mp3"));
+        music.setVolume(0.2f);
+        music.setLooping(true);
+        music.play();
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         controlesMovil.mario = level.getMario();
     }

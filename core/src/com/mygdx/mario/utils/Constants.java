@@ -143,7 +143,7 @@ public class Constants {
     public static final float LEVEL_END_DURATION = 5;
     public static final String GAME_OVER_MESSAGE = "¡¡¡Has perdido!!!";
     public static final String VICTORIA_MENSAJE = "¡¡¡Has ganado!!!";
-    public static final String FONT_FILE = "C:\\Users\\manue\\AndroidStudioProjects\\Mario\\android\\assets\\font\\Run!.ttf";
+    public static final String FONT_FILE =  "font/header.fnt";
 
     public static final String FONDO = "fondo";
     public static final String FONDO2 = "fondo2";

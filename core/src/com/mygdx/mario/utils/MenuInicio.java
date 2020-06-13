@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
@@ -26,20 +25,19 @@ public class MenuInicio implements Screen {
     SpriteBatch batch;
     public final Viewport viewport;
     BitmapFont font;
-    private FreeTypeFontGenerator generator;
-    private FreeTypeFontGenerator.FreeTypeFontParameter parametros;
     long startTime;
     private Texture reiniciar;
     private Texture salir;
     Main main;
     //GamePlayScreen gamePlayScreen;
     Sound fin;
-
     public MenuInicio(Main main) {
         this.viewport = new ExtendViewport(Constants.WORLD_SIZE, Constants.WORLD_SIZE);
         reiniciar = new Texture(Constants.REANUDAR);
         batch = new SpriteBatch();
         this.main=main;
+        font = new BitmapFont(Gdx.files.internal(Constants.FONT_FILE));
+        font.getData().setScale(1);
     }
 
     public void init() {
@@ -52,11 +50,6 @@ public class MenuInicio implements Screen {
 
     @Override
     public void show() {
-        generator = new FreeTypeFontGenerator(Gdx.files.internal(Constants.FONT_FILE));
-        parametros = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parametros.size = 30;
-        font = generator.generateFont(parametros);
-        generator.dispose();
     }
 
     @Override
@@ -65,7 +58,6 @@ public class MenuInicio implements Screen {
         batch.setProjectionMatrix(viewport.getCamera().combined);
         batch.begin();
         float timeElapsed = Utils.secondsSince(startTime);
-
         Texture texture = new Texture(Constants.FONDO_INICIO);
         batch.draw(texture, 0 , 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         /*Gdx.gl.glClearColor(

@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
@@ -20,8 +19,6 @@ import com.mygdx.mario.entities.Fondo;
 public class YouLostHUD {
     public final Viewport viewport;
     BitmapFont font;
-    private FreeTypeFontGenerator generator;
-    private FreeTypeFontGenerator.FreeTypeFontParameter parametros;
     long startTime;
     private Texture reiniciar;
     private Texture salir;
@@ -30,8 +27,8 @@ public class YouLostHUD {
 
     public YouLostHUD(GamePlayScreen gamePlayScreen) {
         this.viewport = new ExtendViewport(Constants.WORLD_SIZE, Constants.WORLD_SIZE);
-        /*font = new BitmapFont(Gdx.files.internal(Constants.FONT_FILE));
-        font.getData().setScale(1);*/
+        font = new BitmapFont(Gdx.files.internal(Constants.FONT_FILE));
+        font.getData().setScale(1);
         reiniciar = new Texture(Constants.NUEVA_PARTIDA);
         this.gamePlayScreen = gamePlayScreen;
     }
@@ -50,14 +47,7 @@ public class YouLostHUD {
         Gdx.gl.glClearColor(
                 0, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        //font.setColor(Color.BLACK);
-
-        generator = new FreeTypeFontGenerator(Gdx.files.internal(Constants.FONT_FILE));
-        parametros = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parametros.size = 30;
-        font = generator.generateFont(parametros);
-        generator.dispose();
-
+        font.setColor(Color.BLACK);
         if (gamePlayScreen.getNumeroNivel().equals("Nivel3") && gamePlayScreen.getLevel().getLlaves().size==0){
             font.draw(batch, Constants.VICTORIA_MENSAJE, viewport.getWorldWidth() / 2, viewport.getWorldHeight() - 50, 2, Align.center, false);
         }else{
