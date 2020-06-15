@@ -13,8 +13,8 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.mario.GamePlayScreen;
 import com.mygdx.mario.entities.Fondo;
+import com.mygdx.mario.GamePlayScreen;
 
 public class YouLostHUD {
     public final Viewport viewport;
@@ -26,10 +26,10 @@ public class YouLostHUD {
     Sound fin;
 
     public YouLostHUD(GamePlayScreen gamePlayScreen) {
-        this.viewport = new ExtendViewport(Constants.WORLD_SIZE, Constants.WORLD_SIZE);
-        font = new BitmapFont(Gdx.files.internal(Constants.FONT_FILE));
+        this.viewport = new ExtendViewport(com.mygdx.mario.utils.Constants.WORLD_SIZE, com.mygdx.mario.utils.Constants.WORLD_SIZE);
+        font = new BitmapFont(Gdx.files.internal(com.mygdx.mario.utils.Constants.FONT_FILE));
         font.getData().setScale(1);
-        reiniciar = new Texture(Constants.NUEVA_PARTIDA);
+        reiniciar = new Texture(com.mygdx.mario.utils.Constants.NUEVA_PARTIDA);
         this.gamePlayScreen = gamePlayScreen;
     }
 
@@ -42,14 +42,14 @@ public class YouLostHUD {
         batch.setProjectionMatrix(viewport.getCamera().combined);
         batch.begin();
         float timeElapsed = Utils.secondsSince(startTime);
-        Fondo fondo = new Fondo(viewport.getScreenX(), viewport.getScreenY(), viewport.getScreenWidth(),viewport.getScreenHeight());
+        com.mygdx.mario.entities.Fondo fondo = new Fondo(viewport.getScreenX(), viewport.getScreenY(), viewport.getScreenWidth(),viewport.getScreenHeight());
         fondo.render(batch);
         Gdx.gl.glClearColor(
                 0, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         font.setColor(Color.BLACK);
         if (gamePlayScreen.getNumeroNivel().equals("Nivel3") && gamePlayScreen.getLevel().getLlaves().size==0){
-            font.draw(batch, Constants.VICTORIA_MENSAJE, viewport.getWorldWidth() / 2, viewport.getWorldHeight() - 50, 2, Align.center, false);
+            font.draw(batch, com.mygdx.mario.utils.Constants.VICTORIA_MENSAJE, viewport.getWorldWidth() / 2, viewport.getWorldHeight() - 50, 2, Align.center, false);
         }else{
             font.draw(batch, Constants.GAME_OVER_MESSAGE, viewport.getWorldWidth() / 2, viewport.getWorldHeight() - 50, 2, Align.center, false);
         }

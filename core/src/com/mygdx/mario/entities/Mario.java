@@ -3,7 +3,6 @@ package com.mygdx.mario.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
@@ -11,11 +10,11 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.mygdx.mario.Assets;
-import com.mygdx.mario.utils.Constants;
+import com.mygdx.mario.Level;
 import com.mygdx.mario.utils.CuentaAtras;
 import com.mygdx.mario.utils.Enums;
-import com.mygdx.mario.Level;
+import com.mygdx.mario.Assets;
+import com.mygdx.mario.utils.Constants;
 import com.mygdx.mario.utils.Utils;
 
 import java.util.Timer;
@@ -42,8 +41,8 @@ public class Mario {
     long walkStartTime;
     long jumpStartTime;
 
-    Level level;
-    CuentaAtras cuentaAtras;
+    com.mygdx.mario.Level level;
+    com.mygdx.mario.utils.CuentaAtras cuentaAtras;
 
     public Mario(Vector2 spawnLocation, Level level) {
         this.spawnLocation = spawnLocation;
@@ -66,7 +65,7 @@ public class Mario {
         choque = Enums.Choque.NO;
     }
 
-    public void update(float delta, Array<Plataforma> plataformas, Array<Bloque2> bloques2, Array<Bloque3> bloques3) {
+    public void update(float delta, Array<Plataforma> plataformas, Array<com.mygdx.mario.entities.Bloque2> bloques2, Array<Bloque3> bloques3) {
         lastFramePosition.set(position);
         velocity.y -= Constants.GRAVITY;
         position.mulAdd(velocity, delta);
@@ -88,7 +87,7 @@ public class Mario {
                 }
             }
 
-            for (Bloque2 bloque2 : bloques2) {
+            for (com.mygdx.mario.entities.Bloque2 bloque2 : bloques2) {
                 if (SobreBloque(bloque2)) {
                     jumpState = Enums.JumpState.GROUNDED;
                     velocity.y = 0;
@@ -167,7 +166,7 @@ public class Mario {
 
         level.getEnemigos().begin();
         Rectangle rectanguloPersonaje= new Rectangle(
-                position.x -Constants.PERSONAJE_STANCE_WIDTH /2 ,
+                position.x - Constants.PERSONAJE_STANCE_WIDTH /2 ,
                 position.y -  Constants.PERSONAJE_EYE_HEIGHT,
                 Assets.instance.marioAssets.jumping.getRegionWidth(),
                 Assets.instance.marioAssets.jumping.getRegionHeight());
@@ -241,8 +240,8 @@ public class Mario {
 
         for (Pinchos pinchos : level.getPinchos()) {
             Rectangle rectanguloPinchos = new Rectangle(
-                    pinchos.position.x-Constants.PINCHOS_COLLISION_RADIUS,
-                    pinchos.position.y-Constants.PINCHOS_COLLISION_RADIUS,
+                    pinchos.position.x- Constants.PINCHOS_COLLISION_RADIUS,
+                    pinchos.position.y- Constants.PINCHOS_COLLISION_RADIUS,
                     pinchos.width,
                     pinchos.height
             );
@@ -263,22 +262,9 @@ public class Mario {
             );
 
             if (rectanguloPersonaje.overlaps(rectanguloBola)) {
-                System.out.println("CHOQUEEEEEE");
-                System.out.println("Rx " + rectanguloBola.x + " Ry " + rectanguloBola.y + " width " + rectanguloBola.width + " height " + rectanguloBola.height);
-                System.out.println("x " +bola.position.x + " y " + bola.position.y);
-                System.out.println("MARIO: " + rectanguloPersonaje.x+ " " +rectanguloPersonaje.y + " BOla: " + rectanguloBola.x + " " + rectanguloBola.y);
                 vidasPersonaje--;
                 position = new Vector2(-4450, 0);
             }
-
-            /*System.out.println(lastFramePosition.dst(bola.position));
-            if (position.dst(bola.position) < 25.0) {
-
-                System.out.println("CHOQUEEEEEE");
-                System.out.println("MARIO: " + rectanguloMario.x+ " " +rectanguloMario.y + " BOla: " + rectanguloBola.x + " " + rectanguloBola.y);
-                vidasPersonaje--;
-                position = new Vector2(-4450, 30);
-            }*/
         }
         level.getBolas().end();
 
@@ -296,7 +282,7 @@ public class Mario {
                 music.play();
                 choque = Enums.Choque.SI;
                 Timer timer = new Timer();
-                cuentaAtras = new CuentaAtras(this);
+                cuentaAtras = new com.mygdx.mario.utils.CuentaAtras(this);
                 timer.schedule(cuentaAtras, 0, 1000);
                 cuentaAtras.setCountdown(5);
                 level.getPociones().removeValue(pocion, true);
@@ -423,12 +409,12 @@ public class Mario {
             region = Assets.instance.marioAssets.standingLeft;
         } else if (facing == Enums.Direction.LEFT && walkState == Enums.WalkState.WALKING) {
             float walkTimeSeconds = Utils.secondsSince(walkStartTime);
-            region = (TextureRegion) Assets.instance.marioAssets.walkingLeftAnimation.getKeyFrame(walkTimeSeconds);
+            region = (TextureRegion) com.mygdx.mario.Assets.instance.marioAssets.walkingLeftAnimation.getKeyFrame(walkTimeSeconds);
         }
 
-        Utils.drawTextureRegion(batch, region,
+        com.mygdx.mario.utils.Utils.drawTextureRegion(batch, region,
                 position.x - Constants.PERSONAJE_EYE_POSITION.x,
-                position.y - Constants.PERSONAJE_EYE_POSITION.y
+                position.y - com.mygdx.mario.utils.Constants.PERSONAJE_EYE_POSITION.y
         );
     }
 
@@ -456,7 +442,7 @@ public class Mario {
         this.choque = choque;
     }
 
-    public CuentaAtras getCuentaAtras() {
+    public com.mygdx.mario.utils.CuentaAtras getCuentaAtras() {
         return cuentaAtras;
     }
 

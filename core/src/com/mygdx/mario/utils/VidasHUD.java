@@ -13,7 +13,7 @@ public class VidasHUD {
     final BitmapFont font;
 
     public VidasHUD() {
-        this.viewport = new ExtendViewport(Constants.HUD_VIEWPORT_SIZE, Constants.HUD_VIEWPORT_SIZE);
+        this.viewport = new ExtendViewport(com.mygdx.mario.utils.Constants.HUD_VIEWPORT_SIZE, com.mygdx.mario.utils.Constants.HUD_VIEWPORT_SIZE);
         font = new BitmapFont();
         font.getData().setScale(1);
     }
@@ -25,7 +25,7 @@ public class VidasHUD {
         final TextureRegion vida = Assets.instance.vidaAssets.vida;
         for (int i = 1; i <= lives; i++) {
             final Vector2 drawPosition = new Vector2(
-                    viewport.getWorldWidth() - i * (Constants.HUD_MARGIN / 2 + vida.getRegionWidth()),
+                    viewport.getWorldWidth() - i * (com.mygdx.mario.utils.Constants.HUD_MARGIN / 2 + vida.getRegionWidth()),
                     viewport.getWorldHeight() - Constants.HUD_MARGIN - vida.getRegionHeight()
             );
             Utils.drawTextureRegion(

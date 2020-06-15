@@ -16,6 +16,7 @@ import com.mygdx.mario.entities.Pinchos;
 import com.mygdx.mario.entities.Plataforma;
 import com.mygdx.mario.entities.Pocion;
 import com.mygdx.mario.entities.Vida;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -27,10 +28,10 @@ public class LevelLoader {
 
     public static final String TAG = LevelLoader.class.toString();
 
-    public static Level load(String nombre, Viewport viewport, int vidas) {
+    public static com.mygdx.mario.Level load(String nombre, Viewport viewport, int vidas) {
 
         String path = Constants.LEVEL_DIR + File.separator + nombre + "." + Constants.LEVEL_FILE_EXTENSION;
-        Level level = new Level(viewport);
+        com.mygdx.mario.Level level = new com.mygdx.mario.Level(viewport);
         level.getMario().setVidasPersonaje(vidas);
         FileHandle file = Gdx.files.internal(path);
         JSONParser parser = new JSONParser();
@@ -60,7 +61,7 @@ public class LevelLoader {
 
     private static void loadPlatforms(JSONArray array, Level level, int vidas, String nombreNivel) {
 
-        Array<Plataforma> plataformas = new Array<Plataforma>();
+        Array<com.mygdx.mario.entities.Plataforma> plataformas = new Array<com.mygdx.mario.entities.Plataforma>();
         for (Object object : array) {
             final JSONObject platformObject = (JSONObject) object;
 
@@ -72,7 +73,7 @@ public class LevelLoader {
 
             final float height = ((Number) platformObject.get(Constants.LEVEL_HEIGHT_KEY)).floatValue();
 
-            final Plataforma plataforma = new Plataforma(x, y + height, width, height);
+            final com.mygdx.mario.entities.Plataforma plataforma = new com.mygdx.mario.entities.Plataforma(x, y + height, width, height);
 
             plataformas.add(plataforma);
 
@@ -91,58 +92,58 @@ public class LevelLoader {
             }*/
 
             if (identifier != null && identifier.equals(Constants.LEVEL_VIDA_TAG)) {
-                final Vida vida = new Vida(new Vector2(x,y),width,height);
+                final com.mygdx.mario.entities.Vida vida = new Vida(new Vector2(x,y),width,height);
                 level.getVidas().add(vida);
                 plataformas.removeValue(plataforma,true);
             }
 
             if (identifier != null && identifier.equals(Constants.LEVEL_LLAVE_TAG)) {
-                final Llave llave = new Llave(new Vector2(x,y),width,height);
+                final com.mygdx.mario.entities.Llave llave = new Llave(new Vector2(x,y),width,height);
                 level.getLlaves().add(llave);
                 plataformas.removeValue(plataforma,true);
             }
 
             if (identifier != null && identifier.equals(Constants.LEVEL_FONDO_TAG)) {
-                Fondo fondo = new Fondo(x,y,width,height);
+                com.mygdx.mario.entities.Fondo fondo = new Fondo(x,y,width,height);
                 fondo.setNivel(Enums.Nivel.Nivel1);
                 level.getFondos().add(fondo);
                 plataformas.removeValue(plataforma,true);
             }
 
             if (identifier != null && identifier.equals(Constants.LEVEL_POCION_TAG)) {
-                final Pocion pocion= new Pocion(new Vector2(x,y),width,height);
+                final com.mygdx.mario.entities.Pocion pocion= new Pocion(new Vector2(x,y),width,height);
                 level.getPociones().add(pocion);
                 plataformas.removeValue(plataforma,true);
             }
 
             if (identifier != null && identifier.equals(Constants.LEVEL_PINCHOS_TAG)) {
-                final Pinchos pinchos= new Pinchos(new Vector2(x,y),width,height);
+                final com.mygdx.mario.entities.Pinchos pinchos= new Pinchos(new Vector2(x,y),width,height);
                 level.getPinchos().add(pinchos);
                 plataformas.removeValue(plataforma,true);
             }
 
             if (identifier != null && identifier.equals(Constants.LEVEL_BLOQUE2_TAG)) {
-                final Bloque2 bloque2= new Bloque2(x,y + height,width,height);
+                final com.mygdx.mario.entities.Bloque2 bloque2= new Bloque2(x,y + height,width,height);
                 level.getBloques2().add(bloque2);
                 plataformas.removeValue(plataforma,true);
             }
 
             if (identifier != null && identifier.equals(Constants.LEVEL_BLOQUE3_TAG)) {
-                final Bloque3 bloque3= new Bloque3(x ,y ,width,height);
+                final com.mygdx.mario.entities.Bloque3 bloque3= new Bloque3(x ,y ,width,height);
                 level.getBloques3().add(bloque3);
                 plataformas.removeValue(plataforma,true);
             }
 
             if (identifier != null && identifier.equals(Constants.LEVEL_BOLA_TAG)) {
-                final Bola bola= new Bola(new Vector2(x,y),width,height,level);
+                final com.mygdx.mario.entities.Bola bola= new Bola(new Vector2(x,y),width,height,level);
                 level.getBolas().add(bola);
                 plataformas.removeValue(plataforma,true);
             }
         }
 
-        plataformas.sort(new Comparator<Plataforma>() {
+        plataformas.sort(new Comparator<com.mygdx.mario.entities.Plataforma>() {
             @Override
-            public int compare(Plataforma p1, Plataforma p2) {
+            public int compare(com.mygdx.mario.entities.Plataforma p1, Plataforma p2) {
                 if (p1.top < p2.top) {
                     return 1;
                 } else if (p1.top > p2.top) {

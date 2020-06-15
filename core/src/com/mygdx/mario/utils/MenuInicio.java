@@ -1,15 +1,11 @@
 package com.mygdx.mario.utils;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
@@ -17,9 +13,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.mario.GamePlayScreen;
 import com.mygdx.mario.Main;
-import com.mygdx.mario.entities.Fondo;
 
 public class MenuInicio implements Screen {
     SpriteBatch batch;
@@ -28,7 +22,7 @@ public class MenuInicio implements Screen {
     long startTime;
     private Texture reiniciar;
     private Texture salir;
-    Main main;
+    com.mygdx.mario.Main main;
     //GamePlayScreen gamePlayScreen;
     Sound fin;
     public MenuInicio(Main main) {

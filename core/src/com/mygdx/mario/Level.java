@@ -5,14 +5,14 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.mario.entities.Bloque2;
 import com.mygdx.mario.entities.Bloque3;
 import com.mygdx.mario.entities.Bola;
 import com.mygdx.mario.entities.Enemigo;
+import com.mygdx.mario.entities.Pinchos;
+import com.mygdx.mario.entities.Bloque2;
 import com.mygdx.mario.entities.Fondo;
 import com.mygdx.mario.entities.Llave;
 import com.mygdx.mario.entities.Mario;
-import com.mygdx.mario.entities.Pinchos;
 import com.mygdx.mario.entities.Plataforma;
 import com.mygdx.mario.entities.Pocion;
 import com.mygdx.mario.entities.Vida;
@@ -24,21 +24,21 @@ public class Level {
 
     public Mario mario;
     Array<Plataforma> plataformas;
-    private DelayedRemovalArray<Enemigo> enemigos;
+    private DelayedRemovalArray<com.mygdx.mario.entities.Enemigo> enemigos;
     private DelayedRemovalArray<Vida> vidas;
     private DelayedRemovalArray<Llave> llaves;
-    private DelayedRemovalArray<Bola> bolas;
+    private DelayedRemovalArray<com.mygdx.mario.entities.Bola> bolas;
     private Array<Fondo> fondos;
-    private Array<Pinchos> pinchos;
+    private Array<com.mygdx.mario.entities.Pinchos> pinchos;
     private Array<Pocion> pociones;
     private Array<Bloque2> bloques2;
-    private Array<Bloque3> bloques3;
+    private Array<com.mygdx.mario.entities.Bloque3> bloques3;
 
     public Level(Viewport viewport) {
         this.viewport = viewport;
         plataformas = new Array<Plataforma>();
         fondos = new Array<Fondo>();
-        pinchos = new Array<Pinchos>();
+        pinchos = new Array<com.mygdx.mario.entities.Pinchos>();
         pociones = new Array<Pocion>();
         bloques2 = new Array<>();
         bloques3 = new Array<>();
@@ -49,12 +49,12 @@ public class Level {
         mario.update(delta, plataformas, bloques2, bloques3);
 
         for (int i = 0; i < enemigos.size; i++) {
-            Enemigo enemigo = enemigos.get(i);
+            com.mygdx.mario.entities.Enemigo enemigo = enemigos.get(i);
             enemigo.update(delta);
         }
 
         for (int i = 0; i < bolas.size; i++) {
-            Bola bola= bolas.get(i);
+            com.mygdx.mario.entities.Bola bola= bolas.get(i);
             bola.update(delta);
         }
     }
@@ -76,7 +76,7 @@ public class Level {
             llave.render(batch);
         }
 
-        for (Pinchos pinchos : pinchos) {
+        for (com.mygdx.mario.entities.Pinchos pinchos : pinchos) {
             pinchos.render(batch);
         }
 
@@ -84,7 +84,7 @@ public class Level {
             pocion.render(batch);
         }
 
-        for (Enemigo enemigo : enemigos) {
+        for (com.mygdx.mario.entities.Enemigo enemigo : enemigos) {
             enemigo.render(batch);
         }
 
@@ -92,11 +92,11 @@ public class Level {
             bloque2.render(batch);
         }
 
-        for (Bloque3 bloque3 : bloques3) {
+        for (com.mygdx.mario.entities.Bloque3 bloque3 : bloques3) {
             bloque3.render(batch);
         }
 
-        for (Bola bola : bolas) {
+        for (com.mygdx.mario.entities.Bola bola : bolas) {
             bola.render(batch);
         }
 
@@ -106,10 +106,10 @@ public class Level {
     private void initializeDebugLevel() {
         mario = new Mario(new Vector2(-4450,0),this);
         mario.setTerminado(false);
-        enemigos = new DelayedRemovalArray<Enemigo>();
+        enemigos = new DelayedRemovalArray<com.mygdx.mario.entities.Enemigo>();
         vidas = new DelayedRemovalArray<Vida>();
         llaves = new DelayedRemovalArray<Llave>();
-        bolas = new DelayedRemovalArray<Bola>();
+        bolas = new DelayedRemovalArray<com.mygdx.mario.entities.Bola>();
     }
 
     public Viewport getViewport() {
@@ -128,7 +128,7 @@ public class Level {
         this.mario = mario;
     }
 
-    public DelayedRemovalArray<Enemigo> getEnemigos() {
+    public DelayedRemovalArray<com.mygdx.mario.entities.Enemigo> getEnemigos() {
         return enemigos;
     }
 
@@ -168,7 +168,7 @@ public class Level {
         this.fondos = fondos;
     }
 
-    public Array<Pinchos> getPinchos() {
+    public Array<com.mygdx.mario.entities.Pinchos> getPinchos() {
         return pinchos;
     }
 
@@ -192,7 +192,7 @@ public class Level {
         this.bloques2 = bloques2;
     }
 
-    public Array<Bloque3> getBloques3() {
+    public Array<com.mygdx.mario.entities.Bloque3> getBloques3() {
         return bloques3;
     }
 
@@ -200,7 +200,7 @@ public class Level {
         this.bloques3 = bloques3;
     }
 
-    public DelayedRemovalArray<Bola> getBolas() {
+    public DelayedRemovalArray<com.mygdx.mario.entities.Bola> getBolas() {
         return bolas;
     }
 

@@ -2,7 +2,6 @@ package com.mygdx.mario;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
@@ -11,14 +10,15 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.mygdx.mario.utils.Constants;
+import com.mygdx.mario.utils.ChaseCam;
+import com.mygdx.mario.utils.TiempoChoqueHUD;
+import com.mygdx.mario.utils.Utils;
+import com.mygdx.mario.utils.VidasHUD;
+import com.mygdx.mario.utils.YouLostHUD;
 import com.mygdx.mario.utils.ControlesMovil;
 import com.mygdx.mario.utils.Enums;
 import com.mygdx.mario.utils.LevelLoader;
-import com.mygdx.mario.utils.VidasHUD;
-import com.mygdx.mario.utils.TiempoChoqueHUD;
-import com.mygdx.mario.utils.Utils;
-import com.mygdx.mario.utils.YouLostHUD;
+import com.mygdx.mario.utils.Constants;
 
 public class GamePlayScreen extends ScreenAdapter {
 
@@ -28,9 +28,9 @@ public class GamePlayScreen extends ScreenAdapter {
     SpriteBatch batch;
     com.mygdx.mario.utils.ChaseCam chaseCam;
 
-    private VidasHUD hud;
-    private YouLostHUD gameOverOverlay;
-    private TiempoChoqueHUD tiempoChoqueHUD;
+    private com.mygdx.mario.utils.VidasHUD hud;
+    private com.mygdx.mario.utils.YouLostHUD gameOverOverlay;
+    private com.mygdx.mario.utils.TiempoChoqueHUD tiempoChoqueHUD;
     long levelEndOverlayStartTime;
     private ControlesMovil controlesMovil;
     private String numeroNivel = "Nivel1";
@@ -138,7 +138,7 @@ public class GamePlayScreen extends ScreenAdapter {
             }
             //sound.dispose();
             gameOverOverlay.render(batch);
-            if (Utils.secondsSince(levelEndOverlayStartTime) > Constants.LEVEL_END_DURATION) {
+            if (Utils.secondsSince(levelEndOverlayStartTime) > com.mygdx.mario.utils.Constants.LEVEL_END_DURATION) {
                 levelEndOverlayStartTime = 0;
             }
         }
@@ -162,7 +162,7 @@ public class GamePlayScreen extends ScreenAdapter {
     public void nuevaPartida(SpriteBatch batch) {
         music.dispose();
         level = LevelLoader.load("Nivel1", gameplayViewport, level.getMario().getVidasPersonaje());
-        chaseCam = new com.mygdx.mario.utils.ChaseCam(gameplayViewport.getCamera(), level.getMario());
+        chaseCam = new ChaseCam(gameplayViewport.getCamera(), level.getMario());
         music = Gdx.audio.newMusic(Gdx.files.internal("sound/principal2.mp3"));
         music.setVolume(0.2f);
         music.setLooping(true);

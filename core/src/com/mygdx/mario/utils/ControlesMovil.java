@@ -6,15 +6,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.mario.Assets;
 import com.mygdx.mario.entities.Mario;
+import com.mygdx.mario.Assets;
 
 public class ControlesMovil extends InputAdapter {
 
     public static final String TAG = ControlesMovil.class.getName();
 
     public final Viewport viewport;
-    public Mario mario;
+    public com.mygdx.mario.entities.Mario mario;
     private Vector2 moveLeftCenter;
     private Vector2 moveRightCenter;
     private Vector2 jumpCenter;
@@ -124,7 +124,7 @@ public class ControlesMovil extends InputAdapter {
 
         Utils.drawTextureRegion(
                 batch,
-                Assets.instance.controlesMovil.saltar,
+                com.mygdx.mario.Assets.instance.controlesMovil.saltar,
                 jumpCenter,
                 Constants.BUTTON_CENTER
         );
